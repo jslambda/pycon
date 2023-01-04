@@ -1,0 +1,217 @@
+<html>
+
+<head>
+    <title>Query Frontend</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        let current_result;  // holds the current search result
+
+        const SAMPLE_QUERIES = [
+            {
+                "query": {
+                    "simple_query_string": {
+                        "fields": ["functions^5", "before", "after", "prev_after", "block"],
+                        "query": "foo bar"
+                    }
+                }
+            },
+            {
+                "query": {
+                    "query_string": {
+                        "query": "print"
+                    }
+                },
+                "size": 50,
+                "from": 0
+            },
+            {
+                "query": {
+                    "regexp": {
+                        "block": {
+                            "value": ".*melt.*",
+                            "flags": "ALL",
+                            "case_insensitive": true,
+                            "max_determinized_states": 10000,
+                            "rewrite": "constant_score"
+                        }
+                    }
+                }
+            }
+        ];
+
+        function prettify(json) {
+            return JSON.stringify(JSON.parse(json), null, 4);
+        }
+
+        function getShortText(s) {
+            if (!s) {
+                return ""
+            }
+            return s.split('\n')[0] + '...'
+        }
+
+        function expandBtnClick(btn) {
+            const searchDescr = $(btn).parent().parent().data();
+            const searchResult = current_result.hits.hits.filter(r => r._id == searchDescr.id && r._index == searchDescr.index)[0];
+            $(btn).parent().parent().html(longRepr(searchResult));
+        }
+
+        function upVoteBtnClick(btn) {
+            const searchDescr = $(btn).parent().parent().data();
+            console.log(searchDescr);
+        }
+
+        function downVoteBtnClick(btn) {
+
+        }
+
+        function limitToIndex(chkBox) {
+            const selectedResults = $(`div[data-index$='${chkBox.name}']`);
+            if (chkBox.checked) {
+                selectedResults.show();
+            } else {
+                selectedResults.hide();
+            }
+        }
+
+        const upVoteBtn = `<button onclick="upVoteBtnClick(this)">+</button>`;
+        const downVoteBtn = `<button onclick="downVoteBtnClick(this)">-</button>`;
+
+        function shortRepr(searchResult) {
+            const id = `${searchResult._index}-${searchResult._id}`;
+            const doc = searchResult._source;
+            return `
+            <div id=${id} class="${searchResult._index} short-repr">
+            <span class="result-title">${id}</span><br />
+            <code>${doc.functions}</code> <br />
+            <hr class="dotted" />
+            <span class="text-short">${getShortText(doc.before)}</span> <br />
+            <hr class="dotted" />
+            <span class="text-short">${getShortText(doc.after)}</span> <br />
+            <hr class="dotted" />
+            <button class="expand-btn" onclick="expandBtnClick(this)">Expand</button>
+            ${upVoteBtn}
+            ${downVoteBtn}
+            </div>
+            `;
+        }
+
+        function compactBtnClick(btn) {
+            const searchDescr = $(btn).parent().parent().data();
+            const searchResult = current_result.hits.hits.filter(r => r._id == searchDescr.id && r._index == searchDescr.index)[0];
+            $(btn).parent().parent().html(shortRepr(searchResult));
+        }
+
+        function longRepr(searchDescr) {
+            const id = `${searchDescr._index}-${searchDescr._id}`;
+            const doc = searchDescr._source;
+            const nblockLines = doc.block.split("\n").length;
+            return `
+            <div id=${id} class="${searchDescr._index} long-repr">
+            <span class="result-title"><strong>${doc.chapter}</strong></span><br />
+            ${doc.prev_after && ("<p>" + doc.prev_after + "</p>")}
+            <p>${doc.before}</p>
+            <textarea rows="${nblockLines}" cols="70" readonly>${doc.block}</textarea>
+            <p>${doc.after}</p>
+            <button class="compact-btn" onclick="compactBtnClick(this)">Compact</button>
+            ${upVoteBtn}
+            ${downVoteBtn}
+            </div>
+            `;
+        }
+
+        $(function () {
+            // Button clicks
+            $("#query-btn").click(function () {
+                $.ajax({
+                    url: "http://localhost:9200/_all/_search",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    data: $("#query-input").val().trim(),
+                    success: function (result) {
+                        current_result = result;
+
+                        $("#outputs").html("");
+                        const outputs = result.hits.hits.map(result => `<div data-index=${result._index} data-id=${result._id}>${shortRepr(result)}</div>`).join('<hr class="main-sep"/>\n');
+                        $("#outputs").append(outputs);
+                        const indices = [...new Set(result.hits.hits.map(result => result._index))];
+                        $("#indices").html("")
+                        $("#indices").append(indices.map(idx => `<input type="checkbox" name="${idx}" onclick="limitToIndex(this)" checked><label for="chk-${idx}">${idx}</label>`).join("<br />\n"));
+                    },
+                    error: function (xhr) {
+                        console.log(xhr);
+                    }
+                });
+            });
+
+            $("#prettify-btn").click(function () {
+                const query = $("#query-input").val().trim();
+                $("#query-input").val(prettify(query));
+            });
+
+            $("#clear-btn").click(function () {
+                $("#query-input").val("");
+            });
+
+            // Sample query selector
+            $("#sample-queries").html(Object.keys(SAMPLE_QUERIES).map(idx => {
+                const queryText = JSON.stringify(SAMPLE_QUERIES[idx]);
+                return `<option value=${idx}>${queryText.substring(0, 50)}</option>`;
+            }).join("\n"));
+
+            $("#sample-queries").change(function () {
+                $("#query-input").val(prettify(JSON.stringify(SAMPLE_QUERIES[$(this).val()])));
+            });
+
+            // Default value for query-input
+            $("#query-input").val(prettify(JSON.stringify(SAMPLE_QUERIES[0])));
+        });
+
+    </script>
+    <style>
+        table,
+        th,
+        td {
+            border: 0.5px solid gray;
+        }
+
+        hr.dotted {
+            border-top: 1px dotted black;
+        }
+
+        hr.main-sep {
+            border-top: 2px solid red
+        }
+    </style>
+</head>
+
+<body>
+    <div id="inputs">
+        <table width="80%">
+            <tr>
+                <td>
+                    Query:<br />
+                    <textarea id="query-input" style="height: 250px; width: 85%;" rows="40" cols="70"></textarea>
+                </td>
+                <td rowspan="2">
+                    Indices:<br />
+                    <div id="indices"></div>
+                </td>
+                <td rowspan="2">
+                    Sample queries:<br />
+                    <select id="sample-queries"></select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button id="query-btn">Send</button>
+                    <button id="prettify-btn">Prettify</button>
+                    <button id="clear-btn">Clear</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <h2>Results</h2>
+    <div id="outputs"></div>
+</body>
+</html>
