@@ -1,0 +1,656 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>pandas.core.resample.Resampler.mean &#8212; pandas 1.4.3 documentation</title>
+    
+    <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  
+    
+    <link rel="stylesheet"
+      href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+    
+      
+  
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/pydata-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/getting_started.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/pandas.css" />
+    
+    <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="pandas.core.resample.Resampler.median" href="pandas.core.resample.Resampler.median.html" />
+    <link rel="prev" title="pandas.core.resample.Resampler.max" href="pandas.core.resample.Resampler.max.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en">
+    
+
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-27880019-2', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+
+<a class="navbar-brand" href="../../index.html">
+  <img src="../../_static/pandas.svg" class="logo" alt="logo">
+</a>
+
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../getting_started/index.html">
+  Getting started
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../user_guide/index.html">
+  User Guide
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../index.html">
+  API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../development/index.html">
+  Development
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../whatsnew/index.html">
+  Release notes
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <div class="dropdown" id="version_switcher">
+    <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
+        1.4.3  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+
+<!-- NOTE: this JS must live here (not in our global JS file) because it relies
+     on being processed by Jinja before it is run (specifically for replacing
+     variables reference/api/pandas.core.resample.Resampler.mean and {'json_url': 'https://pandas.pydata.org/versions.json', 'url_template': 'https://pandas.pydata.org/{version}/', 'version_match': '1.4.3'}.
+-->
+
+<script type="text/javascript">
+// Construct the target URL from the JSON components
+function buildURL(entry) {
+    var template = "https://pandas.pydata.org/{version}/";  // supplied by jinja
+    template = template.replace("{version}", entry.version);
+    return template;
+}
+
+// Check if corresponding page path exists in other version of docs
+// and, if so, go there instead of the homepage of the other docs version
+function checkPageExistsAndRedirect(event) {
+    const currentFilePath = "reference/api/pandas.core.resample.Resampler.mean.html",
+          tryUrl = event.target.getAttribute("href");
+    let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
+    $.ajax({
+        type: 'HEAD',
+        url: tryUrl,
+        // if the page exists, go there
+        success: function() {
+            location.href = tryUrl;
+        }
+    }).fail(function() {
+        location.href = otherDocsHomepage;
+    });
+    // this prevents the browser from following the href of the clicked node
+    // (which is fine because this function takes care of redirecting)
+    return false;
+}
+
+// Populate the version switcher from the JSON config file
+(function () {
+    $.getJSON("https://pandas.pydata.org/versions.json", function(data, textStatus, jqXHR) {
+        const currentFilePath = "reference/api/pandas.core.resample.Resampler.mean.html";
+        // create links to the corresponding page in the other docs versions
+        $.each(data, function(index, entry) {
+            // if no custom name specified (e.g., "latest"), use version string
+            if (!("name" in entry)) {
+                entry.name = entry.version;
+            }
+            // create the node
+            const node = document.createElement("a");
+            node.setAttribute("class", "list-group-item list-group-item-action py-1");
+            node.textContent = `${entry.name}`;
+            // get the base URL for that doc version, add the current page's
+            // path to it, and set as `href`
+            entry.url = buildURL(entry);
+            node.setAttribute("href", `${entry.url}${currentFilePath}`);
+            // on click, AJAX calls will check if the linked page exists before
+            // trying to redirect, and if not, will redirect to the homepage
+            // for that version of the docs.
+            node.onclick = checkPageExistsAndRedirect;
+            $("#version_switcher_menu").append(node);
+            // replace dropdown button text with the preferred display name of
+            // this version, rather than using sphinx's 1.4.3 variable.
+            // also highlight the dropdown entry for the currently-viewed
+            // version's entry
+            if (entry.version == "1.4.3") {
+                node.classList.add("active");
+                $("#version_switcher_button").text(entry.name);
+            }
+        });
+    });
+})();
+</script>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/pandas-dev/pandas" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://twitter.com/pandas_dev" rel="noopener" target="_blank" title="Twitter"><span><i class="fab fa-twitter-square"></i></span>
+            <label class="sr-only">Twitter</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar">
+              <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../io.html">
+   Input/output
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../general_functions.html">
+   General functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../series.html">
+   Series
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../frame.html">
+   DataFrame
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays.html">
+   pandas arrays, scalars, and data types
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../indexing.html">
+   Index objects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../offset_frequency.html">
+   Date offsets
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../window.html">
+   Window
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../groupby.html">
+   GroupBy
+  </a>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../resampling.html">
+   Resampling
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.resample.Resampler.__iter__.html">
+     pandas.core.resample.Resampler.__iter__
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.resample.Resampler.groups.html">
+     pandas.core.resample.Resampler.groups
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.resample.Resampler.indices.html">
+     pandas.core.resample.Resampler.indices
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.resample.Resampler.get_group.html">
+     pandas.core.resample.Resampler.get_group
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.resample.Resampler.apply.html">
+     pandas.core.resample.Resampler.apply
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.resample.Resampler.aggregate.html">
+     pandas.core.resample.Resampler.aggregate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.resample.Resampler.transform.html">
+     pandas.core.resample.Resampler.transform
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.resample.Resampler.pipe.html">
+     pandas.core.resample.Resampler.pipe
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.resample.Resampler.ffill.html">
+     pandas.core.resample.Resampler.ffill
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.resample.Resampler.backfill.html">
+     pandas.core.resample.Resampler.backfill
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.resample.Resampler.bfill.html">
+     pandas.core.resample.Resampler.bfill
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.resample.Resampler.pad.html">
+     pandas.core.resample.Resampler.pad
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.resample.Resampler.nearest.html">
+     pandas.core.resample.Resampler.nearest
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.resample.Resampler.fillna.html">
+     pandas.core.resample.Resampler.fillna
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.resample.Resampler.asfreq.html">
+     pandas.core.resample.Resampler.asfreq
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.resample.Resampler.interpolate.html">
+     pandas.core.resample.Resampler.interpolate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.resample.Resampler.count.html">
+     pandas.core.resample.Resampler.count
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.resample.Resampler.nunique.html">
+     pandas.core.resample.Resampler.nunique
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.resample.Resampler.first.html">
+     pandas.core.resample.Resampler.first
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.resample.Resampler.last.html">
+     pandas.core.resample.Resampler.last
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.resample.Resampler.max.html">
+     pandas.core.resample.Resampler.max
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     pandas.core.resample.Resampler.mean
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.resample.Resampler.median.html">
+     pandas.core.resample.Resampler.median
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.resample.Resampler.min.html">
+     pandas.core.resample.Resampler.min
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.resample.Resampler.ohlc.html">
+     pandas.core.resample.Resampler.ohlc
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.resample.Resampler.prod.html">
+     pandas.core.resample.Resampler.prod
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.resample.Resampler.size.html">
+     pandas.core.resample.Resampler.size
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.resample.Resampler.sem.html">
+     pandas.core.resample.Resampler.sem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.resample.Resampler.std.html">
+     pandas.core.resample.Resampler.std
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.resample.Resampler.sum.html">
+     pandas.core.resample.Resampler.sum
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.resample.Resampler.var.html">
+     pandas.core.resample.Resampler.var
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.resample.Resampler.quantile.html">
+     pandas.core.resample.Resampler.quantile
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../style.html">
+   Style
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../plotting.html">
+   Plotting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../general_utility_functions.html">
+   General utility functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extensions.html">
+   Extensions
+  </a>
+ </li>
+</ul>
+
+    
+  </div>
+</nav>
+              </div>
+              <div class="sidebar-end-items">
+              </div>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+
+<nav id="bd-toc-nav">
+    
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <section id="pandas-core-resample-resampler-mean">
+<h1>pandas.core.resample.Resampler.mean<a class="headerlink" href="#pandas-core-resample-resampler-mean" title="Permalink to this headline">¶</a></h1>
+<dl class="py method">
+<dt class="sig sig-object py" id="pandas.core.resample.Resampler.mean">
+<span class="sig-prename descclassname"><span class="pre">Resampler.</span></span><span class="sig-name descname"><span class="pre">mean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pandas-dev/pandas/blob/v1.4.3/pandas/core/resample.py#L1037-L1039"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pandas.core.resample.Resampler.mean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute mean of groups, excluding missing values.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>numeric_only</strong><span class="classifier">bool, default True</span></dt><dd><p>Include only float, int, boolean columns. If None, will attempt to use
+everything, then use only numeric data.</p>
+</dd>
+<dt><strong>engine</strong><span class="classifier">str, default None</span></dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'cython'</span></code> : Runs the operation through C-extensions from cython.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'numba'</span></code> : Runs the operation through JIT compiled code from numba.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">None</span></code> : Defaults to <code class="docutils literal notranslate"><span class="pre">'cython'</span></code> or globally setting
+<code class="docutils literal notranslate"><span class="pre">compute.use_numba</span></code></p></li>
+</ul>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.4.0.</span></p>
+</div>
+</dd>
+<dt><strong>engine_kwargs</strong><span class="classifier">dict, default None</span></dt><dd><ul class="simple">
+<li><p>For <code class="docutils literal notranslate"><span class="pre">'cython'</span></code> engine, there are no accepted <code class="docutils literal notranslate"><span class="pre">engine_kwargs</span></code></p></li>
+<li><p>For <code class="docutils literal notranslate"><span class="pre">'numba'</span></code> engine, the engine can accept <code class="docutils literal notranslate"><span class="pre">nopython</span></code>, <code class="docutils literal notranslate"><span class="pre">nogil</span></code>
+and <code class="docutils literal notranslate"><span class="pre">parallel</span></code> dictionary keys. The values must either be <code class="docutils literal notranslate"><span class="pre">True</span></code> or
+<code class="docutils literal notranslate"><span class="pre">False</span></code>. The default <code class="docutils literal notranslate"><span class="pre">engine_kwargs</span></code> for the <code class="docutils literal notranslate"><span class="pre">'numba'</span></code> engine is
+<code class="docutils literal notranslate"><span class="pre">{{'nopython':</span> <span class="pre">True,</span> <span class="pre">'nogil':</span> <span class="pre">False,</span> <span class="pre">'parallel':</span> <span class="pre">False}}</span></code></p></li>
+</ul>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.4.0.</span></p>
+</div>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>pandas.Series or pandas.DataFrame</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Series.groupby</span></code></dt><dd><p>Apply a function groupby to a Series.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataFrame.groupby</span></code></dt><dd><p>Apply a function groupby to each row or column of a DataFrame.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+<span class="gp">... </span>                   <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+<span class="gp">... </span>                   <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]},</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Groupby one column and return the mean of the remaining columns in
+each group.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="go">     B         C</span>
+<span class="go">A</span>
+<span class="go">1  3.0  1.333333</span>
+<span class="go">2  4.0  1.500000</span>
+</pre></div>
+</div>
+<p>Groupby two columns and return the mean of the remaining column.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="go">         C</span>
+<span class="go">A B</span>
+<span class="go">1 2.0  2.0</span>
+<span class="go">  4.0  1.0</span>
+<span class="go">2 3.0  1.0</span>
+<span class="go">  5.0  2.0</span>
+</pre></div>
+</div>
+<p>Groupby one column and return the mean of only particular column in
+the group.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)[</span><span class="s1">&#39;B&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="go">A</span>
+<span class="go">1    3.0</span>
+<span class="go">2    4.0</span>
+<span class="go">Name: B, dtype: float64</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+              </div>
+              
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="pandas.core.resample.Resampler.max.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">pandas.core.resample.Resampler.max</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="pandas.core.resample.Resampler.median.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">pandas.core.resample.Resampler.median</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+    <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+  <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2008-2022, the pandas development team.<br>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
+</p>
+    </div>
+    
+  </div>
+</footer>
+  </body>
+</html>

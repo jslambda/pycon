@@ -1,0 +1,517 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Development &#8212; pandas 1.4.3 documentation</title>
+    
+    <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  
+    
+    <link rel="stylesheet"
+      href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+    
+      
+  
+    
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/pydata-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/getting_started.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/pandas.css" />
+    
+    <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Contributing to pandas" href="contributing.html" />
+    <link rel="prev" title="pandas.api.indexers.check_array_indexer" href="../reference/api/pandas.api.indexers.check_array_indexer.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en">
+    
+
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-27880019-2', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+
+<a class="navbar-brand" href="../index.html">
+  <img src="../_static/pandas.svg" class="logo" alt="logo">
+</a>
+
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../getting_started/index.html">
+  Getting started
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../user_guide/index.html">
+  User Guide
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../reference/index.html">
+  API reference
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="current reference internal nav-link" href="#">
+  Development
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../whatsnew/index.html">
+  Release notes
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <div class="dropdown" id="version_switcher">
+    <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
+        1.4.3  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+
+<!-- NOTE: this JS must live here (not in our global JS file) because it relies
+     on being processed by Jinja before it is run (specifically for replacing
+     variables development/index and {'json_url': 'https://pandas.pydata.org/versions.json', 'url_template': 'https://pandas.pydata.org/{version}/', 'version_match': '1.4.3'}.
+-->
+
+<script type="text/javascript">
+// Construct the target URL from the JSON components
+function buildURL(entry) {
+    var template = "https://pandas.pydata.org/{version}/";  // supplied by jinja
+    template = template.replace("{version}", entry.version);
+    return template;
+}
+
+// Check if corresponding page path exists in other version of docs
+// and, if so, go there instead of the homepage of the other docs version
+function checkPageExistsAndRedirect(event) {
+    const currentFilePath = "development/index.html",
+          tryUrl = event.target.getAttribute("href");
+    let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
+    $.ajax({
+        type: 'HEAD',
+        url: tryUrl,
+        // if the page exists, go there
+        success: function() {
+            location.href = tryUrl;
+        }
+    }).fail(function() {
+        location.href = otherDocsHomepage;
+    });
+    // this prevents the browser from following the href of the clicked node
+    // (which is fine because this function takes care of redirecting)
+    return false;
+}
+
+// Populate the version switcher from the JSON config file
+(function () {
+    $.getJSON("https://pandas.pydata.org/versions.json", function(data, textStatus, jqXHR) {
+        const currentFilePath = "development/index.html";
+        // create links to the corresponding page in the other docs versions
+        $.each(data, function(index, entry) {
+            // if no custom name specified (e.g., "latest"), use version string
+            if (!("name" in entry)) {
+                entry.name = entry.version;
+            }
+            // create the node
+            const node = document.createElement("a");
+            node.setAttribute("class", "list-group-item list-group-item-action py-1");
+            node.textContent = `${entry.name}`;
+            // get the base URL for that doc version, add the current page's
+            // path to it, and set as `href`
+            entry.url = buildURL(entry);
+            node.setAttribute("href", `${entry.url}${currentFilePath}`);
+            // on click, AJAX calls will check if the linked page exists before
+            // trying to redirect, and if not, will redirect to the homepage
+            // for that version of the docs.
+            node.onclick = checkPageExistsAndRedirect;
+            $("#version_switcher_menu").append(node);
+            // replace dropdown button text with the preferred display name of
+            // this version, rather than using sphinx's 1.4.3 variable.
+            // also highlight the dropdown entry for the currently-viewed
+            // version's entry
+            if (entry.version == "1.4.3") {
+                node.classList.add("active");
+                $("#version_switcher_button").text(entry.name);
+            }
+        });
+    });
+})();
+</script>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/pandas-dev/pandas" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://twitter.com/pandas_dev" rel="noopener" target="_blank" title="Twitter"><span><i class="fab fa-twitter-square"></i></span>
+            <label class="sr-only">Twitter</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar">
+              <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+    <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="contributing.html">
+   Contributing to pandas
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="contributing_environment.html">
+   Creating a development environment
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="contributing_documentation.html">
+   Contributing to the documentation
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="contributing_docstring.html">
+     pandas docstring guide
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="contributing_codebase.html">
+   Contributing to the code base
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="code_style.html">
+   pandas code style guide
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="maintaining.html">
+   pandas maintenance
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="internals.html">
+   Internals
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="test_writing.html">
+   Test organization
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="debugging_extensions.html">
+   Debugging C extensions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="extending.html">
+   Extending pandas
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="developer.html">
+   Developer
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="policies.html">
+   Policies
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="roadmap.html">
+   Roadmap
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="meeting.html">
+   Developer meetings
+  </a>
+ </li>
+</ul>
+
+    
+  </div>
+</nav>
+              </div>
+              <div class="sidebar-end-items">
+              </div>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+
+<nav id="bd-toc-nav">
+    
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <section id="development">
+<span id="id1"></span><h1>Development<a class="headerlink" href="#development" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing to pandas</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#where-to-start">Where to start?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#bug-reports-and-enhancement-requests">Bug reports and enhancement requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#working-with-the-code">Working with the code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#contributing-your-changes-to-pandas">Contributing your changes to pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#tips-for-a-successful-pull-request">Tips for a successful pull request</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing_environment.html">Creating a development environment</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing_environment.html#creating-an-environment-using-docker">Creating an environment using Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing_environment.html#creating-an-environment-without-docker">Creating an environment without Docker</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing_documentation.html">Contributing to the documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing_documentation.html#about-the-pandas-documentation">About the pandas documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing_documentation.html#updating-a-pandas-docstring">Updating a pandas docstring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing_documentation.html#how-to-build-the-pandas-documentation">How to build the pandas documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing_documentation.html#previewing-changes">Previewing changes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing_codebase.html">Contributing to the code base</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing_codebase.html#code-standards">Code standards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing_codebase.html#pre-commit">Pre-commit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing_codebase.html#optional-dependencies">Optional dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing_codebase.html#type-hints">Type hints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing_codebase.html#testing-with-continuous-integration">Testing with continuous integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing_codebase.html#test-driven-development-code-writing">Test-driven development/code writing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing_codebase.html#running-the-test-suite">Running the test suite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing_codebase.html#running-the-performance-test-suite">Running the performance test suite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing_codebase.html#documenting-your-code">Documenting your code</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="code_style.html">pandas code style guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="code_style.html#patterns">Patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="code_style.html#testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="code_style.html#miscellaneous">Miscellaneous</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="maintaining.html">pandas maintenance</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="maintaining.html#roles">Roles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintaining.html#tasks">Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintaining.html#issue-triage">Issue triage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintaining.html#closing-issues">Closing issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintaining.html#reviewing-pull-requests">Reviewing pull requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintaining.html#backporting">Backporting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintaining.html#cleaning-up-old-issues">Cleaning up old issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintaining.html#cleaning-up-old-pull-requests">Cleaning up old pull requests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintaining.html#becoming-a-pandas-maintainer">Becoming a pandas maintainer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="maintaining.html#merging-pull-requests">Merging pull requests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="internals.html">Internals</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="internals.html#indexing">Indexing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="internals.html#subclassing-pandas-data-structures">Subclassing pandas data structures</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="test_writing.html">Test organization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debugging_extensions.html">Debugging C extensions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="debugging_extensions.html#using-a-debugger">Using a debugger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debugging_extensions.html#checking-memory-leaks-with-valgrind">Checking memory leaks with valgrind</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="extending.html">Extending pandas</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="extending.html#registering-custom-accessors">Registering custom accessors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extending.html#extension-types">Extension types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extending.html#subclassing-pandas-data-structures">Subclassing pandas data structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extending.html#plotting-backends">Plotting backends</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developer.html">Developer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developer.html#storing-pandas-dataframe-objects-in-apache-parquet-format">Storing pandas DataFrame objects in Apache Parquet format</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="policies.html">Policies</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="policies.html#version-policy">Version policy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="policies.html#python-support">Python support</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="roadmap.html#extensibility">Extensibility</a></li>
+<li class="toctree-l2"><a class="reference internal" href="roadmap.html#string-data-type">String data type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="roadmap.html#consistent-missing-value-handling">Consistent missing value handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="roadmap.html#apache-arrow-interoperability">Apache Arrow interoperability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="roadmap.html#block-manager-rewrite">Block manager rewrite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="roadmap.html#decoupling-of-indexing-and-internals">Decoupling of indexing and internals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="roadmap.html#numba-accelerated-operations">Numba-accelerated operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="roadmap.html#performance-monitoring">Performance monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="roadmap.html#roadmap-evolution">Roadmap evolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="roadmap.html#completed-items">Completed items</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="meeting.html">Developer meetings</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="meeting.html#minutes">Minutes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meeting.html#calendar">Calendar</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+              </div>
+              
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="../reference/api/pandas.api.indexers.check_array_indexer.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">pandas.api.indexers.check_array_indexer</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="contributing.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Contributing to pandas</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+    <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+  <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2008-2022, the pandas development team.<br>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
+</p>
+    </div>
+    
+  </div>
+</footer>
+  </body>
+</html>

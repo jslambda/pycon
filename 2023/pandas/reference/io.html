@@ -1,0 +1,1160 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Input/output &#8212; pandas 1.4.3 documentation</title>
+    
+    <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  
+    
+    <link rel="stylesheet"
+      href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+    
+      
+  
+    
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/pydata-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/getting_started.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/pandas.css" />
+    
+    <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pandas.read_pickle" href="api/pandas.read_pickle.html" />
+    <link rel="prev" title="API reference" href="index.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en">
+    
+
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-27880019-2', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+
+<a class="navbar-brand" href="../index.html">
+  <img src="../_static/pandas.svg" class="logo" alt="logo">
+</a>
+
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../getting_started/index.html">
+  Getting started
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../user_guide/index.html">
+  User Guide
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="index.html">
+  API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../development/index.html">
+  Development
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../whatsnew/index.html">
+  Release notes
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <div class="dropdown" id="version_switcher">
+    <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
+        1.4.3  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+
+<!-- NOTE: this JS must live here (not in our global JS file) because it relies
+     on being processed by Jinja before it is run (specifically for replacing
+     variables reference/io and {'json_url': 'https://pandas.pydata.org/versions.json', 'url_template': 'https://pandas.pydata.org/{version}/', 'version_match': '1.4.3'}.
+-->
+
+<script type="text/javascript">
+// Construct the target URL from the JSON components
+function buildURL(entry) {
+    var template = "https://pandas.pydata.org/{version}/";  // supplied by jinja
+    template = template.replace("{version}", entry.version);
+    return template;
+}
+
+// Check if corresponding page path exists in other version of docs
+// and, if so, go there instead of the homepage of the other docs version
+function checkPageExistsAndRedirect(event) {
+    const currentFilePath = "reference/io.html",
+          tryUrl = event.target.getAttribute("href");
+    let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
+    $.ajax({
+        type: 'HEAD',
+        url: tryUrl,
+        // if the page exists, go there
+        success: function() {
+            location.href = tryUrl;
+        }
+    }).fail(function() {
+        location.href = otherDocsHomepage;
+    });
+    // this prevents the browser from following the href of the clicked node
+    // (which is fine because this function takes care of redirecting)
+    return false;
+}
+
+// Populate the version switcher from the JSON config file
+(function () {
+    $.getJSON("https://pandas.pydata.org/versions.json", function(data, textStatus, jqXHR) {
+        const currentFilePath = "reference/io.html";
+        // create links to the corresponding page in the other docs versions
+        $.each(data, function(index, entry) {
+            // if no custom name specified (e.g., "latest"), use version string
+            if (!("name" in entry)) {
+                entry.name = entry.version;
+            }
+            // create the node
+            const node = document.createElement("a");
+            node.setAttribute("class", "list-group-item list-group-item-action py-1");
+            node.textContent = `${entry.name}`;
+            // get the base URL for that doc version, add the current page's
+            // path to it, and set as `href`
+            entry.url = buildURL(entry);
+            node.setAttribute("href", `${entry.url}${currentFilePath}`);
+            // on click, AJAX calls will check if the linked page exists before
+            // trying to redirect, and if not, will redirect to the homepage
+            // for that version of the docs.
+            node.onclick = checkPageExistsAndRedirect;
+            $("#version_switcher_menu").append(node);
+            // replace dropdown button text with the preferred display name of
+            // this version, rather than using sphinx's 1.4.3 variable.
+            // also highlight the dropdown entry for the currently-viewed
+            // version's entry
+            if (entry.version == "1.4.3") {
+                node.classList.add("active");
+                $("#version_switcher_button").text(entry.name);
+            }
+        });
+    });
+})();
+</script>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/pandas-dev/pandas" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://twitter.com/pandas_dev" rel="noopener" target="_blank" title="Twitter"><span><i class="fab fa-twitter-square"></i></span>
+            <label class="sr-only">Twitter</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar">
+              <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active has-children">
+  <a class="current reference internal" href="#">
+   Input/output
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.read_pickle.html">
+     pandas.read_pickle
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.DataFrame.to_pickle.html">
+     pandas.DataFrame.to_pickle
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.read_table.html">
+     pandas.read_table
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.read_csv.html">
+     pandas.read_csv
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.DataFrame.to_csv.html">
+     pandas.DataFrame.to_csv
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.read_fwf.html">
+     pandas.read_fwf
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.read_clipboard.html">
+     pandas.read_clipboard
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.DataFrame.to_clipboard.html">
+     pandas.DataFrame.to_clipboard
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.read_excel.html">
+     pandas.read_excel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.DataFrame.to_excel.html">
+     pandas.DataFrame.to_excel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.ExcelFile.parse.html">
+     pandas.ExcelFile.parse
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.io.formats.style.Styler.to_excel.html">
+     pandas.io.formats.style.Styler.to_excel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.ExcelWriter.html">
+     pandas.ExcelWriter
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.read_json.html">
+     pandas.read_json
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.json_normalize.html">
+     pandas.json_normalize
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.DataFrame.to_json.html">
+     pandas.DataFrame.to_json
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.io.json.build_table_schema.html">
+     pandas.io.json.build_table_schema
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.read_html.html">
+     pandas.read_html
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.DataFrame.to_html.html">
+     pandas.DataFrame.to_html
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.io.formats.style.Styler.to_html.html">
+     pandas.io.formats.style.Styler.to_html
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.read_xml.html">
+     pandas.read_xml
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.DataFrame.to_xml.html">
+     pandas.DataFrame.to_xml
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.DataFrame.to_latex.html">
+     pandas.DataFrame.to_latex
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.io.formats.style.Styler.to_latex.html">
+     pandas.io.formats.style.Styler.to_latex
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.read_hdf.html">
+     pandas.read_hdf
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.HDFStore.put.html">
+     pandas.HDFStore.put
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.HDFStore.append.html">
+     pandas.HDFStore.append
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.HDFStore.get.html">
+     pandas.HDFStore.get
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.HDFStore.select.html">
+     pandas.HDFStore.select
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.HDFStore.info.html">
+     pandas.HDFStore.info
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.HDFStore.keys.html">
+     pandas.HDFStore.keys
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.HDFStore.groups.html">
+     pandas.HDFStore.groups
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.HDFStore.walk.html">
+     pandas.HDFStore.walk
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.read_feather.html">
+     pandas.read_feather
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.DataFrame.to_feather.html">
+     pandas.DataFrame.to_feather
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.read_parquet.html">
+     pandas.read_parquet
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.DataFrame.to_parquet.html">
+     pandas.DataFrame.to_parquet
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.read_orc.html">
+     pandas.read_orc
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.read_sas.html">
+     pandas.read_sas
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.read_spss.html">
+     pandas.read_spss
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.read_sql_table.html">
+     pandas.read_sql_table
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.read_sql_query.html">
+     pandas.read_sql_query
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.read_sql.html">
+     pandas.read_sql
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.DataFrame.to_sql.html">
+     pandas.DataFrame.to_sql
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.read_gbq.html">
+     pandas.read_gbq
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.read_stata.html">
+     pandas.read_stata
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.DataFrame.to_stata.html">
+     pandas.DataFrame.to_stata
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.io.stata.StataReader.data_label.html">
+     pandas.io.stata.StataReader.data_label
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.io.stata.StataReader.value_labels.html">
+     pandas.io.stata.StataReader.value_labels
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.io.stata.StataReader.variable_labels.html">
+     pandas.io.stata.StataReader.variable_labels
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.io.stata.StataWriter.write_file.html">
+     pandas.io.stata.StataWriter.write_file
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="general_functions.html">
+   General functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="series.html">
+   Series
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="frame.html">
+   DataFrame
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="arrays.html">
+   pandas arrays, scalars, and data types
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="indexing.html">
+   Index objects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="offset_frequency.html">
+   Date offsets
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="window.html">
+   Window
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="groupby.html">
+   GroupBy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="resampling.html">
+   Resampling
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="style.html">
+   Style
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="plotting.html">
+   Plotting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="general_utility_functions.html">
+   General utility functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="extensions.html">
+   Extensions
+  </a>
+ </li>
+</ul>
+
+    
+  </div>
+</nav>
+              </div>
+              <div class="sidebar-end-items">
+              </div>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pickling">
+   Pickling
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#flat-file">
+   Flat file
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#clipboard">
+   Clipboard
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#excel">
+   Excel
+  </a>
+  <ul class="nav section-nav flex-column">
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#json">
+   JSON
+  </a>
+  <ul class="nav section-nav flex-column">
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#html">
+   HTML
+  </a>
+  <ul class="nav section-nav flex-column">
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#xml">
+   XML
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#latex">
+   Latex
+  </a>
+  <ul class="nav section-nav flex-column">
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#hdfstore-pytables-hdf5">
+   HDFStore: PyTables (HDF5)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#feather">
+   Feather
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#parquet">
+   Parquet
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#orc">
+   ORC
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sas">
+   SAS
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#spss">
+   SPSS
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#sql">
+   SQL
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#google-bigquery">
+   Google BigQuery
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#stata">
+   STATA
+  </a>
+  <ul class="nav section-nav flex-column">
+  </ul>
+ </li>
+</ul>
+
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <section id="input-output">
+<span id="api-io"></span><h1>Input/output<a class="headerlink" href="#input-output" title="Permalink to this headline">¶</a></h1>
+<section id="pickling">
+<h2>Pickling<a class="headerlink" href="#pickling" title="Permalink to this headline">¶</a></h2>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.read_pickle.html#pandas.read_pickle" title="pandas.read_pickle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_pickle</span></code></a>(filepath_or_buffer[, ...])</p></td>
+<td><p>Load pickled pandas object (or any object) from file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.DataFrame.to_pickle.html#pandas.DataFrame.to_pickle" title="pandas.DataFrame.to_pickle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataFrame.to_pickle</span></code></a>(path[, compression, ...])</p></td>
+<td><p>Pickle (serialize) object to file.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="flat-file">
+<h2>Flat file<a class="headerlink" href="#flat-file" title="Permalink to this headline">¶</a></h2>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.read_table.html#pandas.read_table" title="pandas.read_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_table</span></code></a>(filepath_or_buffer[, sep, ...])</p></td>
+<td><p>Read general delimited file into DataFrame.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.read_csv.html#pandas.read_csv" title="pandas.read_csv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_csv</span></code></a>(filepath_or_buffer[, sep, ...])</p></td>
+<td><p>Read a comma-separated values (csv) file into DataFrame.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.DataFrame.to_csv.html#pandas.DataFrame.to_csv" title="pandas.DataFrame.to_csv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataFrame.to_csv</span></code></a>([path_or_buf, sep, na_rep, ...])</p></td>
+<td><p>Write object to a comma-separated values (csv) file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.read_fwf.html#pandas.read_fwf" title="pandas.read_fwf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_fwf</span></code></a>(filepath_or_buffer[, colspecs, ...])</p></td>
+<td><p>Read a table of fixed-width formatted lines into DataFrame.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="clipboard">
+<h2>Clipboard<a class="headerlink" href="#clipboard" title="Permalink to this headline">¶</a></h2>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.read_clipboard.html#pandas.read_clipboard" title="pandas.read_clipboard"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_clipboard</span></code></a>([sep])</p></td>
+<td><p>Read text from clipboard and pass to read_csv.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.DataFrame.to_clipboard.html#pandas.DataFrame.to_clipboard" title="pandas.DataFrame.to_clipboard"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataFrame.to_clipboard</span></code></a>([excel, sep])</p></td>
+<td><p>Copy object to the system clipboard.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="excel">
+<h2>Excel<a class="headerlink" href="#excel" title="Permalink to this headline">¶</a></h2>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.read_excel.html#pandas.read_excel" title="pandas.read_excel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_excel</span></code></a>(io[, sheet_name, header, names, ...])</p></td>
+<td><p>Read an Excel file into a pandas DataFrame.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.DataFrame.to_excel.html#pandas.DataFrame.to_excel" title="pandas.DataFrame.to_excel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataFrame.to_excel</span></code></a>(excel_writer[, ...])</p></td>
+<td><p>Write object to an Excel sheet.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.ExcelFile.parse.html#pandas.ExcelFile.parse" title="pandas.ExcelFile.parse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExcelFile.parse</span></code></a>([sheet_name, header, names, ...])</p></td>
+<td><p>Parse specified sheet(s) into a DataFrame.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.io.formats.style.Styler.to_excel.html#pandas.io.formats.style.Styler.to_excel" title="pandas.io.formats.style.Styler.to_excel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Styler.to_excel</span></code></a>(excel_writer[, sheet_name, ...])</p></td>
+<td><p>Write Styler to an Excel sheet.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.ExcelWriter.html#pandas.ExcelWriter" title="pandas.ExcelWriter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExcelWriter</span></code></a>(path[, engine, date_format, ...])</p></td>
+<td><p>Class for writing DataFrame objects into excel sheets.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="json">
+<h2>JSON<a class="headerlink" href="#json" title="Permalink to this headline">¶</a></h2>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.read_json.html#pandas.read_json" title="pandas.read_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_json</span></code></a>([path_or_buf, orient, typ, dtype, ...])</p></td>
+<td><p>Convert a JSON string to pandas object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.json_normalize.html#pandas.json_normalize" title="pandas.json_normalize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">json_normalize</span></code></a>(data[, record_path, meta, ...])</p></td>
+<td><p>Normalize semi-structured JSON data into a flat table.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.DataFrame.to_json.html#pandas.DataFrame.to_json" title="pandas.DataFrame.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataFrame.to_json</span></code></a>([path_or_buf, orient, ...])</p></td>
+<td><p>Convert the object to a JSON string.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.io.json.build_table_schema.html#pandas.io.json.build_table_schema" title="pandas.io.json.build_table_schema"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_table_schema</span></code></a>(data[, index, ...])</p></td>
+<td><p>Create a Table schema from <code class="docutils literal notranslate"><span class="pre">data</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="html">
+<h2>HTML<a class="headerlink" href="#html" title="Permalink to this headline">¶</a></h2>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.read_html.html#pandas.read_html" title="pandas.read_html"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_html</span></code></a>(io[, match, flavor, header, ...])</p></td>
+<td><p>Read HTML tables into a <code class="docutils literal notranslate"><span class="pre">list</span></code> of <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> objects.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.DataFrame.to_html.html#pandas.DataFrame.to_html" title="pandas.DataFrame.to_html"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataFrame.to_html</span></code></a>([buf, columns, col_space, ...])</p></td>
+<td><p>Render a DataFrame as an HTML table.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.io.formats.style.Styler.to_html.html#pandas.io.formats.style.Styler.to_html" title="pandas.io.formats.style.Styler.to_html"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Styler.to_html</span></code></a>([buf, table_uuid, ...])</p></td>
+<td><p>Write Styler to a file, buffer or string in HTML-CSS format.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="xml">
+<h2>XML<a class="headerlink" href="#xml" title="Permalink to this headline">¶</a></h2>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.read_xml.html#pandas.read_xml" title="pandas.read_xml"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_xml</span></code></a>(path_or_buffer[, xpath, ...])</p></td>
+<td><p>Read XML document into a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.DataFrame.to_xml.html#pandas.DataFrame.to_xml" title="pandas.DataFrame.to_xml"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataFrame.to_xml</span></code></a>([path_or_buffer, index, ...])</p></td>
+<td><p>Render a DataFrame to an XML document.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="latex">
+<h2>Latex<a class="headerlink" href="#latex" title="Permalink to this headline">¶</a></h2>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.DataFrame.to_latex.html#pandas.DataFrame.to_latex" title="pandas.DataFrame.to_latex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataFrame.to_latex</span></code></a>([buf, columns, ...])</p></td>
+<td><p>Render object to a LaTeX tabular, longtable, or nested table.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.io.formats.style.Styler.to_latex.html#pandas.io.formats.style.Styler.to_latex" title="pandas.io.formats.style.Styler.to_latex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Styler.to_latex</span></code></a>([buf, column_format, ...])</p></td>
+<td><p>Write Styler to a file, buffer or string in LaTeX format.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="hdfstore-pytables-hdf5">
+<h2>HDFStore: PyTables (HDF5)<a class="headerlink" href="#hdfstore-pytables-hdf5" title="Permalink to this headline">¶</a></h2>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.read_hdf.html#pandas.read_hdf" title="pandas.read_hdf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_hdf</span></code></a>(path_or_buf[, key, mode, errors, ...])</p></td>
+<td><p>Read from the store, close it if we opened it.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.HDFStore.put.html#pandas.HDFStore.put" title="pandas.HDFStore.put"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HDFStore.put</span></code></a>(key, value[, format, index, ...])</p></td>
+<td><p>Store object in HDFStore.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.HDFStore.append.html#pandas.HDFStore.append" title="pandas.HDFStore.append"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HDFStore.append</span></code></a>(key, value[, format, axes, ...])</p></td>
+<td><p>Append to Table in file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.HDFStore.get.html#pandas.HDFStore.get" title="pandas.HDFStore.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HDFStore.get</span></code></a>(key)</p></td>
+<td><p>Retrieve pandas object stored in file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.HDFStore.select.html#pandas.HDFStore.select" title="pandas.HDFStore.select"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HDFStore.select</span></code></a>(key[, where, start, stop, ...])</p></td>
+<td><p>Retrieve pandas object stored in file, optionally based on where criteria.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.HDFStore.info.html#pandas.HDFStore.info" title="pandas.HDFStore.info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HDFStore.info</span></code></a>()</p></td>
+<td><p>Print detailed information on the store.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.HDFStore.keys.html#pandas.HDFStore.keys" title="pandas.HDFStore.keys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HDFStore.keys</span></code></a>([include])</p></td>
+<td><p>Return a list of keys corresponding to objects stored in HDFStore.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.HDFStore.groups.html#pandas.HDFStore.groups" title="pandas.HDFStore.groups"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HDFStore.groups</span></code></a>()</p></td>
+<td><p>Return a list of all the top-level nodes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.HDFStore.walk.html#pandas.HDFStore.walk" title="pandas.HDFStore.walk"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HDFStore.walk</span></code></a>([where])</p></td>
+<td><p>Walk the pytables group hierarchy for pandas objects.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>One can store a subclass of <a class="reference internal" href="api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a> or <a class="reference internal" href="api/pandas.Series.html#pandas.Series" title="pandas.Series"><code class="xref py py-class docutils literal notranslate"><span class="pre">Series</span></code></a> to HDF5,
+but the type of the subclass is lost upon storing.</p>
+</div>
+</section>
+<section id="feather">
+<h2>Feather<a class="headerlink" href="#feather" title="Permalink to this headline">¶</a></h2>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.read_feather.html#pandas.read_feather" title="pandas.read_feather"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_feather</span></code></a>(path[, columns, use_threads, ...])</p></td>
+<td><p>Load a feather-format object from the file path.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.DataFrame.to_feather.html#pandas.DataFrame.to_feather" title="pandas.DataFrame.to_feather"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataFrame.to_feather</span></code></a>(path, **kwargs)</p></td>
+<td><p>Write a DataFrame to the binary Feather format.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="parquet">
+<h2>Parquet<a class="headerlink" href="#parquet" title="Permalink to this headline">¶</a></h2>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.read_parquet.html#pandas.read_parquet" title="pandas.read_parquet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_parquet</span></code></a>(path[, engine, columns, ...])</p></td>
+<td><p>Load a parquet object from the file path, returning a DataFrame.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.DataFrame.to_parquet.html#pandas.DataFrame.to_parquet" title="pandas.DataFrame.to_parquet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataFrame.to_parquet</span></code></a>([path, engine, ...])</p></td>
+<td><p>Write a DataFrame to the binary parquet format.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="orc">
+<h2>ORC<a class="headerlink" href="#orc" title="Permalink to this headline">¶</a></h2>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.read_orc.html#pandas.read_orc" title="pandas.read_orc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_orc</span></code></a>(path[, columns])</p></td>
+<td><p>Load an ORC object from the file path, returning a DataFrame.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="sas">
+<h2>SAS<a class="headerlink" href="#sas" title="Permalink to this headline">¶</a></h2>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.read_sas.html#pandas.read_sas" title="pandas.read_sas"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_sas</span></code></a>(filepath_or_buffer[, format, ...])</p></td>
+<td><p>Read SAS files stored as either XPORT or SAS7BDAT format files.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spss">
+<h2>SPSS<a class="headerlink" href="#spss" title="Permalink to this headline">¶</a></h2>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.read_spss.html#pandas.read_spss" title="pandas.read_spss"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_spss</span></code></a>(path[, usecols, convert_categoricals])</p></td>
+<td><p>Load an SPSS file from the file path, returning a DataFrame.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="sql">
+<h2>SQL<a class="headerlink" href="#sql" title="Permalink to this headline">¶</a></h2>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.read_sql_table.html#pandas.read_sql_table" title="pandas.read_sql_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_sql_table</span></code></a>(table_name, con[, schema, ...])</p></td>
+<td><p>Read SQL database table into a DataFrame.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.read_sql_query.html#pandas.read_sql_query" title="pandas.read_sql_query"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_sql_query</span></code></a>(sql, con[, index_col, ...])</p></td>
+<td><p>Read SQL query into a DataFrame.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.read_sql.html#pandas.read_sql" title="pandas.read_sql"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_sql</span></code></a>(sql, con[, index_col, ...])</p></td>
+<td><p>Read SQL query or database table into a DataFrame.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.DataFrame.to_sql.html#pandas.DataFrame.to_sql" title="pandas.DataFrame.to_sql"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataFrame.to_sql</span></code></a>(name, con[, schema, ...])</p></td>
+<td><p>Write records stored in a DataFrame to a SQL database.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="google-bigquery">
+<h2>Google BigQuery<a class="headerlink" href="#google-bigquery" title="Permalink to this headline">¶</a></h2>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.read_gbq.html#pandas.read_gbq" title="pandas.read_gbq"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_gbq</span></code></a>(query[, project_id, index_col, ...])</p></td>
+<td><p>Load data from Google BigQuery.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="stata">
+<h2>STATA<a class="headerlink" href="#stata" title="Permalink to this headline">¶</a></h2>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.read_stata.html#pandas.read_stata" title="pandas.read_stata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_stata</span></code></a>(filepath_or_buffer[, ...])</p></td>
+<td><p>Read Stata file into DataFrame.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.DataFrame.to_stata.html#pandas.DataFrame.to_stata" title="pandas.DataFrame.to_stata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataFrame.to_stata</span></code></a>(path[, convert_dates, ...])</p></td>
+<td><p>Export DataFrame object to Stata dta format.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.io.stata.StataReader.data_label.html#pandas.io.stata.StataReader.data_label" title="pandas.io.stata.StataReader.data_label"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StataReader.data_label</span></code></a></p></td>
+<td><p>Return data label of Stata file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.io.stata.StataReader.value_labels.html#pandas.io.stata.StataReader.value_labels" title="pandas.io.stata.StataReader.value_labels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StataReader.value_labels</span></code></a>()</p></td>
+<td><p>Return a dict, associating each variable name a dict, associating each value its corresponding label.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.io.stata.StataReader.variable_labels.html#pandas.io.stata.StataReader.variable_labels" title="pandas.io.stata.StataReader.variable_labels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StataReader.variable_labels</span></code></a>()</p></td>
+<td><p>Return variable labels as a dict, associating each variable name with corresponding label.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.io.stata.StataWriter.write_file.html#pandas.io.stata.StataWriter.write_file" title="pandas.io.stata.StataWriter.write_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StataWriter.write_file</span></code></a>()</p></td>
+<td><p>Export DataFrame object to Stata dta format.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+              </div>
+              
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="index.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">API reference</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="api/pandas.read_pickle.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">pandas.read_pickle</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+    <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+  <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2008-2022, the pandas development team.<br>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
+</p>
+    </div>
+    
+  </div>
+</footer>
+  </body>
+</html>

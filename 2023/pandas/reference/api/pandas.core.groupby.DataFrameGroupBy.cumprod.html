@@ -1,0 +1,874 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>pandas.core.groupby.DataFrameGroupBy.cumprod &#8212; pandas 1.4.3 documentation</title>
+    
+    <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  
+    
+    <link rel="stylesheet"
+      href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+    
+      
+  
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/pydata-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/getting_started.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/pandas.css" />
+    
+    <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="pandas.core.groupby.DataFrameGroupBy.cumsum" href="pandas.core.groupby.DataFrameGroupBy.cumsum.html" />
+    <link rel="prev" title="pandas.core.groupby.DataFrameGroupBy.cummin" href="pandas.core.groupby.DataFrameGroupBy.cummin.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en">
+    
+
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-27880019-2', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+
+<a class="navbar-brand" href="../../index.html">
+  <img src="../../_static/pandas.svg" class="logo" alt="logo">
+</a>
+
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../getting_started/index.html">
+  Getting started
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../user_guide/index.html">
+  User Guide
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../index.html">
+  API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../development/index.html">
+  Development
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../whatsnew/index.html">
+  Release notes
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <div class="dropdown" id="version_switcher">
+    <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
+        1.4.3  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+
+<!-- NOTE: this JS must live here (not in our global JS file) because it relies
+     on being processed by Jinja before it is run (specifically for replacing
+     variables reference/api/pandas.core.groupby.DataFrameGroupBy.cumprod and {'json_url': 'https://pandas.pydata.org/versions.json', 'url_template': 'https://pandas.pydata.org/{version}/', 'version_match': '1.4.3'}.
+-->
+
+<script type="text/javascript">
+// Construct the target URL from the JSON components
+function buildURL(entry) {
+    var template = "https://pandas.pydata.org/{version}/";  // supplied by jinja
+    template = template.replace("{version}", entry.version);
+    return template;
+}
+
+// Check if corresponding page path exists in other version of docs
+// and, if so, go there instead of the homepage of the other docs version
+function checkPageExistsAndRedirect(event) {
+    const currentFilePath = "reference/api/pandas.core.groupby.DataFrameGroupBy.cumprod.html",
+          tryUrl = event.target.getAttribute("href");
+    let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
+    $.ajax({
+        type: 'HEAD',
+        url: tryUrl,
+        // if the page exists, go there
+        success: function() {
+            location.href = tryUrl;
+        }
+    }).fail(function() {
+        location.href = otherDocsHomepage;
+    });
+    // this prevents the browser from following the href of the clicked node
+    // (which is fine because this function takes care of redirecting)
+    return false;
+}
+
+// Populate the version switcher from the JSON config file
+(function () {
+    $.getJSON("https://pandas.pydata.org/versions.json", function(data, textStatus, jqXHR) {
+        const currentFilePath = "reference/api/pandas.core.groupby.DataFrameGroupBy.cumprod.html";
+        // create links to the corresponding page in the other docs versions
+        $.each(data, function(index, entry) {
+            // if no custom name specified (e.g., "latest"), use version string
+            if (!("name" in entry)) {
+                entry.name = entry.version;
+            }
+            // create the node
+            const node = document.createElement("a");
+            node.setAttribute("class", "list-group-item list-group-item-action py-1");
+            node.textContent = `${entry.name}`;
+            // get the base URL for that doc version, add the current page's
+            // path to it, and set as `href`
+            entry.url = buildURL(entry);
+            node.setAttribute("href", `${entry.url}${currentFilePath}`);
+            // on click, AJAX calls will check if the linked page exists before
+            // trying to redirect, and if not, will redirect to the homepage
+            // for that version of the docs.
+            node.onclick = checkPageExistsAndRedirect;
+            $("#version_switcher_menu").append(node);
+            // replace dropdown button text with the preferred display name of
+            // this version, rather than using sphinx's 1.4.3 variable.
+            // also highlight the dropdown entry for the currently-viewed
+            // version's entry
+            if (entry.version == "1.4.3") {
+                node.classList.add("active");
+                $("#version_switcher_button").text(entry.name);
+            }
+        });
+    });
+})();
+</script>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/pandas-dev/pandas" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://twitter.com/pandas_dev" rel="noopener" target="_blank" title="Twitter"><span><i class="fab fa-twitter-square"></i></span>
+            <label class="sr-only">Twitter</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar">
+              <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../io.html">
+   Input/output
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../general_functions.html">
+   General functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../series.html">
+   Series
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../frame.html">
+   DataFrame
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays.html">
+   pandas arrays, scalars, and data types
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../indexing.html">
+   Index objects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../offset_frequency.html">
+   Date offsets
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../window.html">
+   Window
+  </a>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../groupby.html">
+   GroupBy
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.__iter__.html">
+     pandas.core.groupby.GroupBy.__iter__
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.groups.html">
+     pandas.core.groupby.GroupBy.groups
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.indices.html">
+     pandas.core.groupby.GroupBy.indices
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.get_group.html">
+     pandas.core.groupby.GroupBy.get_group
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.Grouper.html">
+     pandas.Grouper
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.apply.html">
+     pandas.core.groupby.GroupBy.apply
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.agg.html">
+     pandas.core.groupby.GroupBy.agg
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.SeriesGroupBy.aggregate.html">
+     pandas.core.groupby.SeriesGroupBy.aggregate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.aggregate.html">
+     pandas.core.groupby.DataFrameGroupBy.aggregate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.SeriesGroupBy.transform.html">
+     pandas.core.groupby.SeriesGroupBy.transform
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.transform.html">
+     pandas.core.groupby.DataFrameGroupBy.transform
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.pipe.html">
+     pandas.core.groupby.GroupBy.pipe
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.all.html">
+     pandas.core.groupby.GroupBy.all
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.any.html">
+     pandas.core.groupby.GroupBy.any
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.bfill.html">
+     pandas.core.groupby.GroupBy.bfill
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.backfill.html">
+     pandas.core.groupby.GroupBy.backfill
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.count.html">
+     pandas.core.groupby.GroupBy.count
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.cumcount.html">
+     pandas.core.groupby.GroupBy.cumcount
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.cummax.html">
+     pandas.core.groupby.GroupBy.cummax
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.cummin.html">
+     pandas.core.groupby.GroupBy.cummin
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.cumprod.html">
+     pandas.core.groupby.GroupBy.cumprod
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.cumsum.html">
+     pandas.core.groupby.GroupBy.cumsum
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.ffill.html">
+     pandas.core.groupby.GroupBy.ffill
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.first.html">
+     pandas.core.groupby.GroupBy.first
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.head.html">
+     pandas.core.groupby.GroupBy.head
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.last.html">
+     pandas.core.groupby.GroupBy.last
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.max.html">
+     pandas.core.groupby.GroupBy.max
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.mean.html">
+     pandas.core.groupby.GroupBy.mean
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.median.html">
+     pandas.core.groupby.GroupBy.median
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.min.html">
+     pandas.core.groupby.GroupBy.min
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.ngroup.html">
+     pandas.core.groupby.GroupBy.ngroup
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.nth.html">
+     pandas.core.groupby.GroupBy.nth
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.ohlc.html">
+     pandas.core.groupby.GroupBy.ohlc
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.pad.html">
+     pandas.core.groupby.GroupBy.pad
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.prod.html">
+     pandas.core.groupby.GroupBy.prod
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.rank.html">
+     pandas.core.groupby.GroupBy.rank
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.pct_change.html">
+     pandas.core.groupby.GroupBy.pct_change
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.size.html">
+     pandas.core.groupby.GroupBy.size
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.sem.html">
+     pandas.core.groupby.GroupBy.sem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.std.html">
+     pandas.core.groupby.GroupBy.std
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.sum.html">
+     pandas.core.groupby.GroupBy.sum
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.var.html">
+     pandas.core.groupby.GroupBy.var
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.GroupBy.tail.html">
+     pandas.core.groupby.GroupBy.tail
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.all.html">
+     pandas.core.groupby.DataFrameGroupBy.all
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.any.html">
+     pandas.core.groupby.DataFrameGroupBy.any
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.backfill.html">
+     pandas.core.groupby.DataFrameGroupBy.backfill
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.bfill.html">
+     pandas.core.groupby.DataFrameGroupBy.bfill
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.corr.html">
+     pandas.core.groupby.DataFrameGroupBy.corr
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.count.html">
+     pandas.core.groupby.DataFrameGroupBy.count
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.cov.html">
+     pandas.core.groupby.DataFrameGroupBy.cov
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.cumcount.html">
+     pandas.core.groupby.DataFrameGroupBy.cumcount
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.cummax.html">
+     pandas.core.groupby.DataFrameGroupBy.cummax
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.cummin.html">
+     pandas.core.groupby.DataFrameGroupBy.cummin
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     pandas.core.groupby.DataFrameGroupBy.cumprod
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.cumsum.html">
+     pandas.core.groupby.DataFrameGroupBy.cumsum
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.describe.html">
+     pandas.core.groupby.DataFrameGroupBy.describe
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.diff.html">
+     pandas.core.groupby.DataFrameGroupBy.diff
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.ffill.html">
+     pandas.core.groupby.DataFrameGroupBy.ffill
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.fillna.html">
+     pandas.core.groupby.DataFrameGroupBy.fillna
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.filter.html">
+     pandas.core.groupby.DataFrameGroupBy.filter
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.hist.html">
+     pandas.core.groupby.DataFrameGroupBy.hist
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.idxmax.html">
+     pandas.core.groupby.DataFrameGroupBy.idxmax
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.idxmin.html">
+     pandas.core.groupby.DataFrameGroupBy.idxmin
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.mad.html">
+     pandas.core.groupby.DataFrameGroupBy.mad
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.nunique.html">
+     pandas.core.groupby.DataFrameGroupBy.nunique
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.pad.html">
+     pandas.core.groupby.DataFrameGroupBy.pad
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.pct_change.html">
+     pandas.core.groupby.DataFrameGroupBy.pct_change
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.plot.html">
+     pandas.core.groupby.DataFrameGroupBy.plot
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.quantile.html">
+     pandas.core.groupby.DataFrameGroupBy.quantile
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.rank.html">
+     pandas.core.groupby.DataFrameGroupBy.rank
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.resample.html">
+     pandas.core.groupby.DataFrameGroupBy.resample
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.sample.html">
+     pandas.core.groupby.DataFrameGroupBy.sample
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.shift.html">
+     pandas.core.groupby.DataFrameGroupBy.shift
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.size.html">
+     pandas.core.groupby.DataFrameGroupBy.size
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.skew.html">
+     pandas.core.groupby.DataFrameGroupBy.skew
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.take.html">
+     pandas.core.groupby.DataFrameGroupBy.take
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.tshift.html">
+     pandas.core.groupby.DataFrameGroupBy.tshift
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.value_counts.html">
+     pandas.core.groupby.DataFrameGroupBy.value_counts
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.SeriesGroupBy.hist.html">
+     pandas.core.groupby.SeriesGroupBy.hist
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.SeriesGroupBy.nlargest.html">
+     pandas.core.groupby.SeriesGroupBy.nlargest
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.SeriesGroupBy.nsmallest.html">
+     pandas.core.groupby.SeriesGroupBy.nsmallest
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.SeriesGroupBy.nunique.html">
+     pandas.core.groupby.SeriesGroupBy.nunique
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.SeriesGroupBy.unique.html">
+     pandas.core.groupby.SeriesGroupBy.unique
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.SeriesGroupBy.value_counts.html">
+     pandas.core.groupby.SeriesGroupBy.value_counts
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.SeriesGroupBy.is_monotonic_increasing.html">
+     pandas.core.groupby.SeriesGroupBy.is_monotonic_increasing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.SeriesGroupBy.is_monotonic_decreasing.html">
+     pandas.core.groupby.SeriesGroupBy.is_monotonic_decreasing
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.corrwith.html">
+     pandas.core.groupby.DataFrameGroupBy.corrwith
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.groupby.DataFrameGroupBy.boxplot.html">
+     pandas.core.groupby.DataFrameGroupBy.boxplot
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../resampling.html">
+   Resampling
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../style.html">
+   Style
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../plotting.html">
+   Plotting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../general_utility_functions.html">
+   General utility functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extensions.html">
+   Extensions
+  </a>
+ </li>
+</ul>
+
+    
+  </div>
+</nav>
+              </div>
+              <div class="sidebar-end-items">
+              </div>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+
+<nav id="bd-toc-nav">
+    
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <section id="pandas-core-groupby-dataframegroupby-cumprod">
+<h1>pandas.core.groupby.DataFrameGroupBy.cumprod<a class="headerlink" href="#pandas-core-groupby-dataframegroupby-cumprod" title="Permalink to this headline">¶</a></h1>
+<dl class="py method">
+<dt class="sig sig-object py" id="pandas.core.groupby.DataFrameGroupBy.cumprod">
+<span class="sig-prename descclassname"><span class="pre">DataFrameGroupBy.</span></span><span class="sig-name descname"><span class="pre">cumprod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pandas-dev/pandas/blob/v1.4.3/pandas/core/groupby/groupby.py#L3203-L3218"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pandas.core.groupby.DataFrameGroupBy.cumprod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cumulative product for each group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>Series or DataFrame</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Series.groupby</span></code></dt><dd><p>Apply a function groupby to a Series.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataFrame.groupby</span></code></dt><dd><p>Apply a function groupby to each row or column of a DataFrame.</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+</section>
+
+
+              </div>
+              
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="pandas.core.groupby.DataFrameGroupBy.cummin.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">pandas.core.groupby.DataFrameGroupBy.cummin</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="pandas.core.groupby.DataFrameGroupBy.cumsum.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">pandas.core.groupby.DataFrameGroupBy.cumsum</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+    <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+  <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2008-2022, the pandas development team.<br>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
+</p>
+    </div>
+    
+  </div>
+</footer>
+  </body>
+</html>

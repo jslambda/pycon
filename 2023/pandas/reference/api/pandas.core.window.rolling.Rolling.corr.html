@@ -1,0 +1,765 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>pandas.core.window.rolling.Rolling.corr &#8212; pandas 1.4.3 documentation</title>
+    
+    <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  
+    
+    <link rel="stylesheet"
+      href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+    
+      
+  
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/pydata-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/getting_started.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/pandas.css" />
+    
+    <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="pandas.core.window.rolling.Rolling.cov" href="pandas.core.window.rolling.Rolling.cov.html" />
+    <link rel="prev" title="pandas.core.window.rolling.Rolling.max" href="pandas.core.window.rolling.Rolling.max.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en">
+    
+
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-27880019-2', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+
+<a class="navbar-brand" href="../../index.html">
+  <img src="../../_static/pandas.svg" class="logo" alt="logo">
+</a>
+
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../getting_started/index.html">
+  Getting started
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../user_guide/index.html">
+  User Guide
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../index.html">
+  API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../development/index.html">
+  Development
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../whatsnew/index.html">
+  Release notes
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <div class="dropdown" id="version_switcher">
+    <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
+        1.4.3  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+
+<!-- NOTE: this JS must live here (not in our global JS file) because it relies
+     on being processed by Jinja before it is run (specifically for replacing
+     variables reference/api/pandas.core.window.rolling.Rolling.corr and {'json_url': 'https://pandas.pydata.org/versions.json', 'url_template': 'https://pandas.pydata.org/{version}/', 'version_match': '1.4.3'}.
+-->
+
+<script type="text/javascript">
+// Construct the target URL from the JSON components
+function buildURL(entry) {
+    var template = "https://pandas.pydata.org/{version}/";  // supplied by jinja
+    template = template.replace("{version}", entry.version);
+    return template;
+}
+
+// Check if corresponding page path exists in other version of docs
+// and, if so, go there instead of the homepage of the other docs version
+function checkPageExistsAndRedirect(event) {
+    const currentFilePath = "reference/api/pandas.core.window.rolling.Rolling.corr.html",
+          tryUrl = event.target.getAttribute("href");
+    let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
+    $.ajax({
+        type: 'HEAD',
+        url: tryUrl,
+        // if the page exists, go there
+        success: function() {
+            location.href = tryUrl;
+        }
+    }).fail(function() {
+        location.href = otherDocsHomepage;
+    });
+    // this prevents the browser from following the href of the clicked node
+    // (which is fine because this function takes care of redirecting)
+    return false;
+}
+
+// Populate the version switcher from the JSON config file
+(function () {
+    $.getJSON("https://pandas.pydata.org/versions.json", function(data, textStatus, jqXHR) {
+        const currentFilePath = "reference/api/pandas.core.window.rolling.Rolling.corr.html";
+        // create links to the corresponding page in the other docs versions
+        $.each(data, function(index, entry) {
+            // if no custom name specified (e.g., "latest"), use version string
+            if (!("name" in entry)) {
+                entry.name = entry.version;
+            }
+            // create the node
+            const node = document.createElement("a");
+            node.setAttribute("class", "list-group-item list-group-item-action py-1");
+            node.textContent = `${entry.name}`;
+            // get the base URL for that doc version, add the current page's
+            // path to it, and set as `href`
+            entry.url = buildURL(entry);
+            node.setAttribute("href", `${entry.url}${currentFilePath}`);
+            // on click, AJAX calls will check if the linked page exists before
+            // trying to redirect, and if not, will redirect to the homepage
+            // for that version of the docs.
+            node.onclick = checkPageExistsAndRedirect;
+            $("#version_switcher_menu").append(node);
+            // replace dropdown button text with the preferred display name of
+            // this version, rather than using sphinx's 1.4.3 variable.
+            // also highlight the dropdown entry for the currently-viewed
+            // version's entry
+            if (entry.version == "1.4.3") {
+                node.classList.add("active");
+                $("#version_switcher_button").text(entry.name);
+            }
+        });
+    });
+})();
+</script>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/pandas-dev/pandas" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://twitter.com/pandas_dev" rel="noopener" target="_blank" title="Twitter"><span><i class="fab fa-twitter-square"></i></span>
+            <label class="sr-only">Twitter</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar">
+              <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../io.html">
+   Input/output
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../general_functions.html">
+   General functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../series.html">
+   Series
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../frame.html">
+   DataFrame
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays.html">
+   pandas arrays, scalars, and data types
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../indexing.html">
+   Index objects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../offset_frequency.html">
+   Date offsets
+  </a>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../window.html">
+   Window
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.rolling.Rolling.count.html">
+     pandas.core.window.rolling.Rolling.count
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.rolling.Rolling.sum.html">
+     pandas.core.window.rolling.Rolling.sum
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.rolling.Rolling.mean.html">
+     pandas.core.window.rolling.Rolling.mean
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.rolling.Rolling.median.html">
+     pandas.core.window.rolling.Rolling.median
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.rolling.Rolling.var.html">
+     pandas.core.window.rolling.Rolling.var
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.rolling.Rolling.std.html">
+     pandas.core.window.rolling.Rolling.std
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.rolling.Rolling.min.html">
+     pandas.core.window.rolling.Rolling.min
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.rolling.Rolling.max.html">
+     pandas.core.window.rolling.Rolling.max
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     pandas.core.window.rolling.Rolling.corr
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.rolling.Rolling.cov.html">
+     pandas.core.window.rolling.Rolling.cov
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.rolling.Rolling.skew.html">
+     pandas.core.window.rolling.Rolling.skew
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.rolling.Rolling.kurt.html">
+     pandas.core.window.rolling.Rolling.kurt
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.rolling.Rolling.apply.html">
+     pandas.core.window.rolling.Rolling.apply
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.rolling.Rolling.aggregate.html">
+     pandas.core.window.rolling.Rolling.aggregate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.rolling.Rolling.quantile.html">
+     pandas.core.window.rolling.Rolling.quantile
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.rolling.Rolling.sem.html">
+     pandas.core.window.rolling.Rolling.sem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.rolling.Rolling.rank.html">
+     pandas.core.window.rolling.Rolling.rank
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.rolling.Window.mean.html">
+     pandas.core.window.rolling.Window.mean
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.rolling.Window.sum.html">
+     pandas.core.window.rolling.Window.sum
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.rolling.Window.var.html">
+     pandas.core.window.rolling.Window.var
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.rolling.Window.std.html">
+     pandas.core.window.rolling.Window.std
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.expanding.Expanding.count.html">
+     pandas.core.window.expanding.Expanding.count
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.expanding.Expanding.sum.html">
+     pandas.core.window.expanding.Expanding.sum
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.expanding.Expanding.mean.html">
+     pandas.core.window.expanding.Expanding.mean
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.expanding.Expanding.median.html">
+     pandas.core.window.expanding.Expanding.median
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.expanding.Expanding.var.html">
+     pandas.core.window.expanding.Expanding.var
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.expanding.Expanding.std.html">
+     pandas.core.window.expanding.Expanding.std
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.expanding.Expanding.min.html">
+     pandas.core.window.expanding.Expanding.min
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.expanding.Expanding.max.html">
+     pandas.core.window.expanding.Expanding.max
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.expanding.Expanding.corr.html">
+     pandas.core.window.expanding.Expanding.corr
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.expanding.Expanding.cov.html">
+     pandas.core.window.expanding.Expanding.cov
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.expanding.Expanding.skew.html">
+     pandas.core.window.expanding.Expanding.skew
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.expanding.Expanding.kurt.html">
+     pandas.core.window.expanding.Expanding.kurt
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.expanding.Expanding.apply.html">
+     pandas.core.window.expanding.Expanding.apply
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.expanding.Expanding.aggregate.html">
+     pandas.core.window.expanding.Expanding.aggregate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.expanding.Expanding.quantile.html">
+     pandas.core.window.expanding.Expanding.quantile
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.expanding.Expanding.sem.html">
+     pandas.core.window.expanding.Expanding.sem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.expanding.Expanding.rank.html">
+     pandas.core.window.expanding.Expanding.rank
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.ewm.ExponentialMovingWindow.mean.html">
+     pandas.core.window.ewm.ExponentialMovingWindow.mean
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.ewm.ExponentialMovingWindow.sum.html">
+     pandas.core.window.ewm.ExponentialMovingWindow.sum
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.ewm.ExponentialMovingWindow.std.html">
+     pandas.core.window.ewm.ExponentialMovingWindow.std
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.ewm.ExponentialMovingWindow.var.html">
+     pandas.core.window.ewm.ExponentialMovingWindow.var
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.ewm.ExponentialMovingWindow.corr.html">
+     pandas.core.window.ewm.ExponentialMovingWindow.corr
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.core.window.ewm.ExponentialMovingWindow.cov.html">
+     pandas.core.window.ewm.ExponentialMovingWindow.cov
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.api.indexers.BaseIndexer.html">
+     pandas.api.indexers.BaseIndexer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.api.indexers.FixedForwardWindowIndexer.html">
+     pandas.api.indexers.FixedForwardWindowIndexer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.api.indexers.VariableOffsetWindowIndexer.html">
+     pandas.api.indexers.VariableOffsetWindowIndexer
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../groupby.html">
+   GroupBy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../resampling.html">
+   Resampling
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../style.html">
+   Style
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../plotting.html">
+   Plotting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../general_utility_functions.html">
+   General utility functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extensions.html">
+   Extensions
+  </a>
+ </li>
+</ul>
+
+    
+  </div>
+</nav>
+              </div>
+              <div class="sidebar-end-items">
+              </div>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+
+<nav id="bd-toc-nav">
+    
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <section id="pandas-core-window-rolling-rolling-corr">
+<h1>pandas.core.window.rolling.Rolling.corr<a class="headerlink" href="#pandas-core-window-rolling-rolling-corr" title="Permalink to this headline">¶</a></h1>
+<dl class="py method">
+<dt class="sig sig-object py" id="pandas.core.window.rolling.Rolling.corr">
+<span class="sig-prename descclassname"><span class="pre">Rolling.</span></span><span class="sig-name descname"><span class="pre">corr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairwise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ddof</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pandas-dev/pandas/blob/v1.4.3/pandas/core/window/rolling.py#L2465-L2588"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pandas.core.window.rolling.Rolling.corr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the rolling correlation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>other</strong><span class="classifier">Series or DataFrame, optional</span></dt><dd><p>If not supplied then will default to self and produce pairwise
+output.</p>
+</dd>
+<dt><strong>pairwise</strong><span class="classifier">bool, default None</span></dt><dd><p>If False then only matching columns between self and other will be
+used and the output will be a DataFrame.
+If True then all pairwise combinations will be calculated and the
+output will be a MultiIndexed DataFrame in the case of DataFrame
+inputs. In the case of missing elements, only complete pairwise
+observations will be used.</p>
+</dd>
+<dt><strong>ddof</strong><span class="classifier">int, default 1</span></dt><dd><p>Delta Degrees of Freedom.  The divisor used in calculations
+is <code class="docutils literal notranslate"><span class="pre">N</span> <span class="pre">-</span> <span class="pre">ddof</span></code>, where <code class="docutils literal notranslate"><span class="pre">N</span></code> represents the number of elements.</p>
+</dd>
+<dt><strong>**kwargs</strong></dt><dd><p>For NumPy compatibility and will not have an effect on the result.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Series or DataFrame</dt><dd><p>Return type is the same as the original object with <code class="docutils literal notranslate"><span class="pre">np.float64</span></code> dtype.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="pandas.core.window.rolling.Rolling.cov.html#pandas.core.window.rolling.Rolling.cov" title="pandas.core.window.rolling.Rolling.cov"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cov</span></code></a></dt><dd><p>Similar method to calculate covariance.</p>
+</dd>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.corrcoef.html#numpy.corrcoef" title="(in NumPy v1.23)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.corrcoef</span></code></a></dt><dd><p>NumPy Pearson’s correlation calculation.</p>
+</dd>
+<dt><a class="reference internal" href="pandas.Series.rolling.html#pandas.Series.rolling" title="pandas.Series.rolling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.Series.rolling</span></code></a></dt><dd><p>Calling rolling with Series data.</p>
+</dd>
+<dt><a class="reference internal" href="pandas.DataFrame.rolling.html#pandas.DataFrame.rolling" title="pandas.DataFrame.rolling"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame.rolling</span></code></a></dt><dd><p>Calling rolling with DataFrames.</p>
+</dd>
+<dt><a class="reference internal" href="pandas.Series.corr.html#pandas.Series.corr" title="pandas.Series.corr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.Series.corr</span></code></a></dt><dd><p>Aggregating corr for Series.</p>
+</dd>
+<dt><a class="reference internal" href="pandas.DataFrame.corr.html#pandas.DataFrame.corr" title="pandas.DataFrame.corr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame.corr</span></code></a></dt><dd><p>Aggregating corr for DataFrame.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Notes</p>
+<p>This function uses Pearson’s definition of correlation
+(<a class="reference external" href="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient">https://en.wikipedia.org/wiki/Pearson_correlation_coefficient</a>).</p>
+<p>When <cite>other</cite> is not specified, the output will be self correlation (e.g.
+all 1’s), except for <a class="reference internal" href="pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a> inputs with <cite>pairwise</cite>
+set to <cite>True</cite>.</p>
+<p>Function will return <code class="docutils literal notranslate"><span class="pre">NaN</span></code> for correlations of equal valued sequences;
+this is the result of a 0/0 division error.</p>
+<p>When <cite>pairwise</cite> is set to <cite>False</cite>, only matching columns between <cite>self</cite> and
+<cite>other</cite> will be used.</p>
+<p>When <cite>pairwise</cite> is set to <cite>True</cite>, the output will be a MultiIndex DataFrame
+with the original index on the first level, and the <cite>other</cite> DataFrame
+columns on the second level.</p>
+<p>In the case of missing elements, only complete pairwise observations
+will be used.</p>
+<p class="rubric">Examples</p>
+<p>The below example shows a rolling calculation with a window size of
+four matching the equivalent function call using <code class="xref py py-meth docutils literal notranslate"><span class="pre">numpy.corrcoef()</span></code>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># numpy returns a 2X2 array, the correlation coefficient</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># is the number at entry [0][1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">v1</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">v2</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="go">0.333333</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">v1</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">v2</span><span class="p">[</span><span class="mi">1</span><span class="p">:])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="go">0.916949</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">v2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s1</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">corr</span><span class="p">(</span><span class="n">s2</span><span class="p">)</span>
+<span class="go">0         NaN</span>
+<span class="go">1         NaN</span>
+<span class="go">2         NaN</span>
+<span class="go">3    0.333333</span>
+<span class="go">4    0.916949</span>
+<span class="go">dtype: float64</span>
+</pre></div>
+</div>
+<p>The below example shows a similar rolling calculation on a
+DataFrame using the pairwise option.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">51.</span><span class="p">,</span> <span class="mf">35.</span><span class="p">],</span> <span class="p">[</span><span class="mf">49.</span><span class="p">,</span> <span class="mf">30.</span><span class="p">],</span> <span class="p">[</span><span class="mf">47.</span><span class="p">,</span> <span class="mf">32.</span><span class="p">],</span>        <span class="p">[</span><span class="mf">46.</span><span class="p">,</span> <span class="mf">31.</span><span class="p">],</span> <span class="p">[</span><span class="mf">50.</span><span class="p">,</span> <span class="mf">36.</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">matrix</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">matrix</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">7</span><span class="p">))</span>
+<span class="go">[[1.         0.6263001]</span>
+<span class="go"> [0.6263001  1.       ]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">matrix</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">7</span><span class="p">))</span>
+<span class="go">[[1.         0.5553681]</span>
+<span class="go"> [0.5553681  1.        ]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">,</span><span class="s1">&#39;Y&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span>
+<span class="go">      X     Y</span>
+<span class="go">0  51.0  35.0</span>
+<span class="go">1  49.0  30.0</span>
+<span class="go">2  47.0  32.0</span>
+<span class="go">3  46.0  31.0</span>
+<span class="go">4  50.0  36.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">corr</span><span class="p">(</span><span class="n">pairwise</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">            X         Y</span>
+<span class="go">0 X       NaN       NaN</span>
+<span class="go">  Y       NaN       NaN</span>
+<span class="go">1 X       NaN       NaN</span>
+<span class="go">  Y       NaN       NaN</span>
+<span class="go">2 X       NaN       NaN</span>
+<span class="go">  Y       NaN       NaN</span>
+<span class="go">3 X  1.000000  0.626300</span>
+<span class="go">  Y  0.626300  1.000000</span>
+<span class="go">4 X  1.000000  0.555368</span>
+<span class="go">  Y  0.555368  1.000000</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+              </div>
+              
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="pandas.core.window.rolling.Rolling.max.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">pandas.core.window.rolling.Rolling.max</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="pandas.core.window.rolling.Rolling.cov.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">pandas.core.window.rolling.Rolling.cov</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+    <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+  <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2008-2022, the pandas development team.<br>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
+</p>
+    </div>
+    
+  </div>
+</footer>
+  </body>
+</html>

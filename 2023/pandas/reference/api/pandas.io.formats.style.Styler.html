@@ -1,0 +1,1052 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>pandas.io.formats.style.Styler &#8212; pandas 1.4.3 documentation</title>
+    
+    <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  
+    
+    <link rel="stylesheet"
+      href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+    
+      
+  
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/pydata-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/getting_started.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/pandas.css" />
+    
+    <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="pandas.io.formats.style.Styler.apply" href="pandas.io.formats.style.Styler.apply.html" />
+    <link rel="prev" title="Style" href="../style.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en">
+    
+
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-27880019-2', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+
+<a class="navbar-brand" href="../../index.html">
+  <img src="../../_static/pandas.svg" class="logo" alt="logo">
+</a>
+
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../getting_started/index.html">
+  Getting started
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../user_guide/index.html">
+  User Guide
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../index.html">
+  API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../development/index.html">
+  Development
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../whatsnew/index.html">
+  Release notes
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <div class="dropdown" id="version_switcher">
+    <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
+        1.4.3  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+
+<!-- NOTE: this JS must live here (not in our global JS file) because it relies
+     on being processed by Jinja before it is run (specifically for replacing
+     variables reference/api/pandas.io.formats.style.Styler and {'json_url': 'https://pandas.pydata.org/versions.json', 'url_template': 'https://pandas.pydata.org/{version}/', 'version_match': '1.4.3'}.
+-->
+
+<script type="text/javascript">
+// Construct the target URL from the JSON components
+function buildURL(entry) {
+    var template = "https://pandas.pydata.org/{version}/";  // supplied by jinja
+    template = template.replace("{version}", entry.version);
+    return template;
+}
+
+// Check if corresponding page path exists in other version of docs
+// and, if so, go there instead of the homepage of the other docs version
+function checkPageExistsAndRedirect(event) {
+    const currentFilePath = "reference/api/pandas.io.formats.style.Styler.html",
+          tryUrl = event.target.getAttribute("href");
+    let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
+    $.ajax({
+        type: 'HEAD',
+        url: tryUrl,
+        // if the page exists, go there
+        success: function() {
+            location.href = tryUrl;
+        }
+    }).fail(function() {
+        location.href = otherDocsHomepage;
+    });
+    // this prevents the browser from following the href of the clicked node
+    // (which is fine because this function takes care of redirecting)
+    return false;
+}
+
+// Populate the version switcher from the JSON config file
+(function () {
+    $.getJSON("https://pandas.pydata.org/versions.json", function(data, textStatus, jqXHR) {
+        const currentFilePath = "reference/api/pandas.io.formats.style.Styler.html";
+        // create links to the corresponding page in the other docs versions
+        $.each(data, function(index, entry) {
+            // if no custom name specified (e.g., "latest"), use version string
+            if (!("name" in entry)) {
+                entry.name = entry.version;
+            }
+            // create the node
+            const node = document.createElement("a");
+            node.setAttribute("class", "list-group-item list-group-item-action py-1");
+            node.textContent = `${entry.name}`;
+            // get the base URL for that doc version, add the current page's
+            // path to it, and set as `href`
+            entry.url = buildURL(entry);
+            node.setAttribute("href", `${entry.url}${currentFilePath}`);
+            // on click, AJAX calls will check if the linked page exists before
+            // trying to redirect, and if not, will redirect to the homepage
+            // for that version of the docs.
+            node.onclick = checkPageExistsAndRedirect;
+            $("#version_switcher_menu").append(node);
+            // replace dropdown button text with the preferred display name of
+            // this version, rather than using sphinx's 1.4.3 variable.
+            // also highlight the dropdown entry for the currently-viewed
+            // version's entry
+            if (entry.version == "1.4.3") {
+                node.classList.add("active");
+                $("#version_switcher_button").text(entry.name);
+            }
+        });
+    });
+})();
+</script>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/pandas-dev/pandas" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://twitter.com/pandas_dev" rel="noopener" target="_blank" title="Twitter"><span><i class="fab fa-twitter-square"></i></span>
+            <label class="sr-only">Twitter</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar">
+              <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../io.html">
+   Input/output
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../general_functions.html">
+   General functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../series.html">
+   Series
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../frame.html">
+   DataFrame
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../arrays.html">
+   pandas arrays, scalars, and data types
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../indexing.html">
+   Index objects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../offset_frequency.html">
+   Date offsets
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../window.html">
+   Window
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../groupby.html">
+   GroupBy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../resampling.html">
+   Resampling
+  </a>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../style.html">
+   Style
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 current active has-children">
+    <a class="current reference internal" href="#">
+     pandas.io.formats.style.Styler
+    </a>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+    <label for="toctree-checkbox-2">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.apply.html">
+       pandas.io.formats.style.Styler.apply
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.apply_index.html">
+       pandas.io.formats.style.Styler.apply_index
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.applymap.html">
+       pandas.io.formats.style.Styler.applymap
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.applymap_index.html">
+       pandas.io.formats.style.Styler.applymap_index
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.background_gradient.html">
+       pandas.io.formats.style.Styler.background_gradient
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.bar.html">
+       pandas.io.formats.style.Styler.bar
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.clear.html">
+       pandas.io.formats.style.Styler.clear
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.export.html">
+       pandas.io.formats.style.Styler.export
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.format.html">
+       pandas.io.formats.style.Styler.format
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.format_index.html">
+       pandas.io.formats.style.Styler.format_index
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.from_custom_template.html">
+       pandas.io.formats.style.Styler.from_custom_template
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.hide.html">
+       pandas.io.formats.style.Styler.hide
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.hide_columns.html">
+       pandas.io.formats.style.Styler.hide_columns
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.hide_index.html">
+       pandas.io.formats.style.Styler.hide_index
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.highlight_between.html">
+       pandas.io.formats.style.Styler.highlight_between
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.highlight_max.html">
+       pandas.io.formats.style.Styler.highlight_max
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.highlight_min.html">
+       pandas.io.formats.style.Styler.highlight_min
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.highlight_null.html">
+       pandas.io.formats.style.Styler.highlight_null
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.highlight_quantile.html">
+       pandas.io.formats.style.Styler.highlight_quantile
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.pipe.html">
+       pandas.io.formats.style.Styler.pipe
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.render.html">
+       pandas.io.formats.style.Styler.render
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.set_caption.html">
+       pandas.io.formats.style.Styler.set_caption
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.set_na_rep.html">
+       pandas.io.formats.style.Styler.set_na_rep
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.set_precision.html">
+       pandas.io.formats.style.Styler.set_precision
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.set_properties.html">
+       pandas.io.formats.style.Styler.set_properties
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.set_sticky.html">
+       pandas.io.formats.style.Styler.set_sticky
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.set_table_attributes.html">
+       pandas.io.formats.style.Styler.set_table_attributes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.set_table_styles.html">
+       pandas.io.formats.style.Styler.set_table_styles
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.set_td_classes.html">
+       pandas.io.formats.style.Styler.set_td_classes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.set_tooltips.html">
+       pandas.io.formats.style.Styler.set_tooltips
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.set_uuid.html">
+       pandas.io.formats.style.Styler.set_uuid
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.text_gradient.html">
+       pandas.io.formats.style.Styler.text_gradient
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.to_excel.html">
+       pandas.io.formats.style.Styler.to_excel
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.to_html.html">
+       pandas.io.formats.style.Styler.to_html
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.to_latex.html">
+       pandas.io.formats.style.Styler.to_latex
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.use.html">
+       pandas.io.formats.style.Styler.use
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pandas.io.formats.style.Styler.where.html">
+       pandas.io.formats.style.Styler.where
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.from_custom_template.html">
+     pandas.io.formats.style.Styler.from_custom_template
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.env.html">
+     pandas.io.formats.style.Styler.env
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.template_html.html">
+     pandas.io.formats.style.Styler.template_html
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.template_html_style.html">
+     pandas.io.formats.style.Styler.template_html_style
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.template_html_table.html">
+     pandas.io.formats.style.Styler.template_html_table
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.template_latex.html">
+     pandas.io.formats.style.Styler.template_latex
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.loader.html">
+     pandas.io.formats.style.Styler.loader
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.apply.html">
+     pandas.io.formats.style.Styler.apply
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.applymap.html">
+     pandas.io.formats.style.Styler.applymap
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.apply_index.html">
+     pandas.io.formats.style.Styler.apply_index
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.applymap_index.html">
+     pandas.io.formats.style.Styler.applymap_index
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.format.html">
+     pandas.io.formats.style.Styler.format
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.format_index.html">
+     pandas.io.formats.style.Styler.format_index
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.hide.html">
+     pandas.io.formats.style.Styler.hide
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.set_td_classes.html">
+     pandas.io.formats.style.Styler.set_td_classes
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.set_table_styles.html">
+     pandas.io.formats.style.Styler.set_table_styles
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.set_table_attributes.html">
+     pandas.io.formats.style.Styler.set_table_attributes
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.set_tooltips.html">
+     pandas.io.formats.style.Styler.set_tooltips
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.set_caption.html">
+     pandas.io.formats.style.Styler.set_caption
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.set_sticky.html">
+     pandas.io.formats.style.Styler.set_sticky
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.set_properties.html">
+     pandas.io.formats.style.Styler.set_properties
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.set_uuid.html">
+     pandas.io.formats.style.Styler.set_uuid
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.clear.html">
+     pandas.io.formats.style.Styler.clear
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.pipe.html">
+     pandas.io.formats.style.Styler.pipe
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.highlight_null.html">
+     pandas.io.formats.style.Styler.highlight_null
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.highlight_max.html">
+     pandas.io.formats.style.Styler.highlight_max
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.highlight_min.html">
+     pandas.io.formats.style.Styler.highlight_min
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.highlight_between.html">
+     pandas.io.formats.style.Styler.highlight_between
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.highlight_quantile.html">
+     pandas.io.formats.style.Styler.highlight_quantile
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.background_gradient.html">
+     pandas.io.formats.style.Styler.background_gradient
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.text_gradient.html">
+     pandas.io.formats.style.Styler.text_gradient
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.bar.html">
+     pandas.io.formats.style.Styler.bar
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.to_html.html">
+     pandas.io.formats.style.Styler.to_html
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.to_latex.html">
+     pandas.io.formats.style.Styler.to_latex
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.to_excel.html">
+     pandas.io.formats.style.Styler.to_excel
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.export.html">
+     pandas.io.formats.style.Styler.export
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="pandas.io.formats.style.Styler.use.html">
+     pandas.io.formats.style.Styler.use
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../plotting.html">
+   Plotting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../general_utility_functions.html">
+   General utility functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../extensions.html">
+   Extensions
+  </a>
+ </li>
+</ul>
+
+    
+  </div>
+</nav>
+              </div>
+              <div class="sidebar-end-items">
+              </div>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+
+<nav id="bd-toc-nav">
+    
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <section id="pandas-io-formats-style-styler">
+<h1>pandas.io.formats.style.Styler<a class="headerlink" href="#pandas-io-formats-style-styler" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pandas.io.formats.style.Styler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pandas.io.formats.style.</span></span><span class="sig-name descname"><span class="pre">Styler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_styles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uuid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caption</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_attributes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">na_rep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uuid_len</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decimal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thousands</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">escape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/pandas-dev/pandas/blob/v1.4.3/pandas/io/formats/style.py#L105-L3479"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pandas.io.formats.style.Styler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helps style a DataFrame or Series according to the data with HTML and CSS.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>data</strong><span class="classifier">Series or DataFrame</span></dt><dd><p>Data to be styled - either a Series or DataFrame.</p>
+</dd>
+<dt><strong>precision</strong><span class="classifier">int, optional</span></dt><dd><p>Precision to round floats to. If not given defaults to
+<code class="docutils literal notranslate"><span class="pre">pandas.options.styler.format.precision</span></code>.</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 1.4.0.</span></p>
+</div>
+</dd>
+<dt><strong>table_styles</strong><span class="classifier">list-like, default None</span></dt><dd><p>List of {selector: (attr, value)} dicts; see Notes.</p>
+</dd>
+<dt><strong>uuid</strong><span class="classifier">str, default None</span></dt><dd><p>A unique identifier to avoid CSS collisions; generated automatically.</p>
+</dd>
+<dt><strong>caption</strong><span class="classifier">str, tuple, default None</span></dt><dd><p>String caption to attach to the table. Tuple only used for LaTeX dual captions.</p>
+</dd>
+<dt><strong>table_attributes</strong><span class="classifier">str, default None</span></dt><dd><p>Items that show up in the opening <code class="docutils literal notranslate"><span class="pre">&lt;table&gt;</span></code> tag
+in addition to automatic (by default) id.</p>
+</dd>
+<dt><strong>cell_ids</strong><span class="classifier">bool, default True</span></dt><dd><p>If True, each cell will have an <code class="docutils literal notranslate"><span class="pre">id</span></code> attribute in their HTML tag.
+The <code class="docutils literal notranslate"><span class="pre">id</span></code> takes the form <code class="docutils literal notranslate"><span class="pre">T_&lt;uuid&gt;_row&lt;num_row&gt;_col&lt;num_col&gt;</span></code>
+where <code class="docutils literal notranslate"><span class="pre">&lt;uuid&gt;</span></code> is the unique identifier, <code class="docutils literal notranslate"><span class="pre">&lt;num_row&gt;</span></code> is the row
+number and <code class="docutils literal notranslate"><span class="pre">&lt;num_col&gt;</span></code> is the column number.</p>
+</dd>
+<dt><strong>na_rep</strong><span class="classifier">str, optional</span></dt><dd><p>Representation for missing values.
+If <code class="docutils literal notranslate"><span class="pre">na_rep</span></code> is None, no special formatting is applied, and falls back to
+<code class="docutils literal notranslate"><span class="pre">pandas.options.styler.format.na_rep</span></code>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.0.0.</span></p>
+</div>
+</dd>
+<dt><strong>uuid_len</strong><span class="classifier">int, default 5</span></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">uuid</span></code> is not specified, the length of the <code class="docutils literal notranslate"><span class="pre">uuid</span></code> to randomly generate
+expressed in hex characters, in range [0, 32].</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.2.0.</span></p>
+</div>
+</dd>
+<dt><strong>decimal</strong><span class="classifier">str, optional</span></dt><dd><p>Character used as decimal separator for floats, complex and integers. If not
+given uses <code class="docutils literal notranslate"><span class="pre">pandas.options.styler.format.decimal</span></code>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.3.0.</span></p>
+</div>
+</dd>
+<dt><strong>thousands</strong><span class="classifier">str, optional, default None</span></dt><dd><p>Character used as thousands separator for floats, complex and integers. If not
+given uses <code class="docutils literal notranslate"><span class="pre">pandas.options.styler.format.thousands</span></code>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.3.0.</span></p>
+</div>
+</dd>
+<dt><strong>escape</strong><span class="classifier">str, optional</span></dt><dd><p>Use ‘html’ to replace the characters <code class="docutils literal notranslate"><span class="pre">&amp;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">'</span></code>, and <code class="docutils literal notranslate"><span class="pre">&quot;</span></code>
+in cell display string with HTML-safe sequences.
+Use ‘latex’ to replace the characters <code class="docutils literal notranslate"><span class="pre">&amp;</span></code>, <code class="docutils literal notranslate"><span class="pre">%</span></code>, <code class="docutils literal notranslate"><span class="pre">$</span></code>, <code class="docutils literal notranslate"><span class="pre">#</span></code>, <code class="docutils literal notranslate"><span class="pre">_</span></code>,
+<code class="docutils literal notranslate"><span class="pre">{</span></code>, <code class="docutils literal notranslate"><span class="pre">}</span></code>, <code class="docutils literal notranslate"><span class="pre">~</span></code>, <code class="docutils literal notranslate"><span class="pre">^</span></code>, and <code class="docutils literal notranslate"><span class="pre">\</span></code> in the cell display string with
+LaTeX-safe sequences. If not given uses <code class="docutils literal notranslate"><span class="pre">pandas.options.styler.format.escape</span></code>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.3.0.</span></p>
+</div>
+</dd>
+<dt><strong>formatter</strong><span class="classifier">str, callable, dict, optional</span></dt><dd><p>Object to define how values are displayed. See <code class="docutils literal notranslate"><span class="pre">Styler.format</span></code>. If not given
+uses <code class="docutils literal notranslate"><span class="pre">pandas.options.styler.format.formatter</span></code>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.4.0.</span></p>
+</div>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataFrame.style</span></code></dt><dd><p>Return a Styler object containing methods for building a styled HTML representation for the DataFrame.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Notes</p>
+<p>Most styling will be done by passing style functions into
+<code class="docutils literal notranslate"><span class="pre">Styler.apply</span></code> or <code class="docutils literal notranslate"><span class="pre">Styler.applymap</span></code>. Style functions should
+return values with strings containing CSS <code class="docutils literal notranslate"><span class="pre">'attr:</span> <span class="pre">value'</span></code> that will
+be applied to the indicated cells.</p>
+<p>If using in the Jupyter notebook, Styler has defined a <code class="docutils literal notranslate"><span class="pre">_repr_html_</span></code>
+to automatically render itself. Otherwise call Styler.to_html to get
+the generated HTML.</p>
+<p>CSS classes are attached to the generated HTML</p>
+<ul class="simple">
+<li><p>Index and Column names include <code class="docutils literal notranslate"><span class="pre">index_name</span></code> and <code class="docutils literal notranslate"><span class="pre">level&lt;k&gt;</span></code>
+where <cite>k</cite> is its level in a MultiIndex</p></li>
+<li><p>Index label cells include</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">row_heading</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">row&lt;n&gt;</span></code> where <cite>n</cite> is the numeric position of the row</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">level&lt;k&gt;</span></code> where <cite>k</cite> is the level in a MultiIndex</p></li>
+</ul>
+</li>
+<li><p>Column label cells include
+* <code class="docutils literal notranslate"><span class="pre">col_heading</span></code>
+* <code class="docutils literal notranslate"><span class="pre">col&lt;n&gt;</span></code> where <cite>n</cite> is the numeric position of the column
+* <code class="docutils literal notranslate"><span class="pre">level&lt;k&gt;</span></code> where <cite>k</cite> is the level in a MultiIndex</p></li>
+<li><p>Blank cells include <code class="docutils literal notranslate"><span class="pre">blank</span></code></p></li>
+<li><p>Data cells include <code class="docutils literal notranslate"><span class="pre">data</span></code></p></li>
+<li><p>Trimmed cells include <code class="docutils literal notranslate"><span class="pre">col_trim</span></code> or <code class="docutils literal notranslate"><span class="pre">row_trim</span></code>.</p></li>
+</ul>
+<p>Any, or all, or these classes can be renamed by using the <code class="docutils literal notranslate"><span class="pre">css_class_names</span></code>
+argument in <code class="docutils literal notranslate"><span class="pre">Styler.set_table_classes</span></code>, giving a value such as
+<em>{“row”: “MY_ROW_CLASS”, “col_trim”: “”, “row_trim”: “”}</em>.</p>
+<p class="rubric">Attributes</p>
+<table class="table">
+<colgroup>
+<col style="width: 46%" />
+<col style="width: 54%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>env</strong></p></td>
+<td><p>(Jinja2 jinja2.Environment)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>template_html</strong></p></td>
+<td><p>(Jinja2 Template)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>template_html_table</strong></p></td>
+<td><p>(Jinja2 Template)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>template_html_style</strong></p></td>
+<td><p>(Jinja2 Template)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>template_latex</strong></p></td>
+<td><p>(Jinja2 Template)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>loader</strong></p></td>
+<td><p>(Jinja2 Loader)</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.apply.html#pandas.io.formats.style.Styler.apply" title="pandas.io.formats.style.Styler.apply"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply</span></code></a>(func[, axis, subset])</p></td>
+<td><p>Apply a CSS-styling function column-wise, row-wise, or table-wise.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.apply_index.html#pandas.io.formats.style.Styler.apply_index" title="pandas.io.formats.style.Styler.apply_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_index</span></code></a>(func[, axis, level])</p></td>
+<td><p>Apply a CSS-styling function to the index or column headers, level-wise.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.applymap.html#pandas.io.formats.style.Styler.applymap" title="pandas.io.formats.style.Styler.applymap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">applymap</span></code></a>(func[, subset])</p></td>
+<td><p>Apply a CSS-styling function elementwise.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.applymap_index.html#pandas.io.formats.style.Styler.applymap_index" title="pandas.io.formats.style.Styler.applymap_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">applymap_index</span></code></a>(func[, axis, level])</p></td>
+<td><p>Apply a CSS-styling function to the index or column headers, elementwise.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.background_gradient.html#pandas.io.formats.style.Styler.background_gradient" title="pandas.io.formats.style.Styler.background_gradient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">background_gradient</span></code></a>([cmap, low, high, axis, ...])</p></td>
+<td><p>Color the background in a gradient style.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.bar.html#pandas.io.formats.style.Styler.bar" title="pandas.io.formats.style.Styler.bar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bar</span></code></a>([subset, axis, color, cmap, width, ...])</p></td>
+<td><p>Draw bar chart in the cell backgrounds.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.clear.html#pandas.io.formats.style.Styler.clear" title="pandas.io.formats.style.Styler.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
+<td><p>Reset the <code class="docutils literal notranslate"><span class="pre">Styler</span></code>, removing any previously applied styles.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.export.html#pandas.io.formats.style.Styler.export" title="pandas.io.formats.style.Styler.export"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export</span></code></a>()</p></td>
+<td><p>Export the styles applied to the current Styler.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.format.html#pandas.io.formats.style.Styler.format" title="pandas.io.formats.style.Styler.format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">format</span></code></a>([formatter, subset, na_rep, ...])</p></td>
+<td><p>Format the text display value of cells.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.format_index.html#pandas.io.formats.style.Styler.format_index" title="pandas.io.formats.style.Styler.format_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">format_index</span></code></a>([formatter, axis, level, ...])</p></td>
+<td><p>Format the text display value of index labels or column headers.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.from_custom_template.html#pandas.io.formats.style.Styler.from_custom_template" title="pandas.io.formats.style.Styler.from_custom_template"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_custom_template</span></code></a>(searchpath[, ...])</p></td>
+<td><p>Factory function for creating a subclass of <code class="docutils literal notranslate"><span class="pre">Styler</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.hide.html#pandas.io.formats.style.Styler.hide" title="pandas.io.formats.style.Styler.hide"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hide</span></code></a>([subset, axis, level, names])</p></td>
+<td><p>Hide the entire index / column headers, or specific rows / columns from display.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.hide_columns.html#pandas.io.formats.style.Styler.hide_columns" title="pandas.io.formats.style.Styler.hide_columns"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hide_columns</span></code></a>([subset, level, names])</p></td>
+<td><p>Hide the column headers or specific keys in the columns from rendering.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.hide_index.html#pandas.io.formats.style.Styler.hide_index" title="pandas.io.formats.style.Styler.hide_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hide_index</span></code></a>([subset, level, names])</p></td>
+<td><p>(DEPRECATED) Hide the entire index, or specific keys in the index from rendering.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.highlight_between.html#pandas.io.formats.style.Styler.highlight_between" title="pandas.io.formats.style.Styler.highlight_between"><code class="xref py py-obj docutils literal notranslate"><span class="pre">highlight_between</span></code></a>([subset, color, axis, ...])</p></td>
+<td><p>Highlight a defined range with a style.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.highlight_max.html#pandas.io.formats.style.Styler.highlight_max" title="pandas.io.formats.style.Styler.highlight_max"><code class="xref py py-obj docutils literal notranslate"><span class="pre">highlight_max</span></code></a>([subset, color, axis, props])</p></td>
+<td><p>Highlight the maximum with a style.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.highlight_min.html#pandas.io.formats.style.Styler.highlight_min" title="pandas.io.formats.style.Styler.highlight_min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">highlight_min</span></code></a>([subset, color, axis, props])</p></td>
+<td><p>Highlight the minimum with a style.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.highlight_null.html#pandas.io.formats.style.Styler.highlight_null" title="pandas.io.formats.style.Styler.highlight_null"><code class="xref py py-obj docutils literal notranslate"><span class="pre">highlight_null</span></code></a>([null_color, subset, props])</p></td>
+<td><p>Highlight missing values with a style.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.highlight_quantile.html#pandas.io.formats.style.Styler.highlight_quantile" title="pandas.io.formats.style.Styler.highlight_quantile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">highlight_quantile</span></code></a>([subset, color, axis, ...])</p></td>
+<td><p>Highlight values defined by a quantile with a style.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.pipe.html#pandas.io.formats.style.Styler.pipe" title="pandas.io.formats.style.Styler.pipe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pipe</span></code></a>(func, *args, **kwargs)</p></td>
+<td><p>Apply <code class="docutils literal notranslate"><span class="pre">func(self,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></code>, and return the result.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.render.html#pandas.io.formats.style.Styler.render" title="pandas.io.formats.style.Styler.render"><code class="xref py py-obj docutils literal notranslate"><span class="pre">render</span></code></a>([sparse_index, sparse_columns])</p></td>
+<td><p>(DEPRECATED) Render the <code class="docutils literal notranslate"><span class="pre">Styler</span></code> including all applied styles to HTML.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.set_caption.html#pandas.io.formats.style.Styler.set_caption" title="pandas.io.formats.style.Styler.set_caption"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_caption</span></code></a>(caption)</p></td>
+<td><p>Set the text added to a <code class="docutils literal notranslate"><span class="pre">&lt;caption&gt;</span></code> HTML element.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.set_na_rep.html#pandas.io.formats.style.Styler.set_na_rep" title="pandas.io.formats.style.Styler.set_na_rep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_na_rep</span></code></a>(na_rep)</p></td>
+<td><p>(DEPRECATED) Set the missing data representation on a <code class="docutils literal notranslate"><span class="pre">Styler</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.set_precision.html#pandas.io.formats.style.Styler.set_precision" title="pandas.io.formats.style.Styler.set_precision"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_precision</span></code></a>(precision)</p></td>
+<td><p>(DEPRECATED) Set the precision used to display values.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.set_properties.html#pandas.io.formats.style.Styler.set_properties" title="pandas.io.formats.style.Styler.set_properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_properties</span></code></a>([subset])</p></td>
+<td><p>Set defined CSS-properties to each <code class="docutils literal notranslate"><span class="pre">&lt;td&gt;</span></code> HTML element within the given subset.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.set_sticky.html#pandas.io.formats.style.Styler.set_sticky" title="pandas.io.formats.style.Styler.set_sticky"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_sticky</span></code></a>([axis, pixel_size, levels])</p></td>
+<td><p>Add CSS to permanently display the index or column headers in a scrolling frame.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.set_table_attributes.html#pandas.io.formats.style.Styler.set_table_attributes" title="pandas.io.formats.style.Styler.set_table_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_table_attributes</span></code></a>(attributes)</p></td>
+<td><p>Set the table attributes added to the <code class="docutils literal notranslate"><span class="pre">&lt;table&gt;</span></code> HTML element.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.set_table_styles.html#pandas.io.formats.style.Styler.set_table_styles" title="pandas.io.formats.style.Styler.set_table_styles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_table_styles</span></code></a>([table_styles, axis, ...])</p></td>
+<td><p>Set the table styles included within the <code class="docutils literal notranslate"><span class="pre">&lt;style&gt;</span></code> HTML element.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.set_td_classes.html#pandas.io.formats.style.Styler.set_td_classes" title="pandas.io.formats.style.Styler.set_td_classes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_td_classes</span></code></a>(classes)</p></td>
+<td><p>Set the DataFrame of strings added to the <code class="docutils literal notranslate"><span class="pre">class</span></code> attribute of <code class="docutils literal notranslate"><span class="pre">&lt;td&gt;</span></code> HTML elements.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.set_tooltips.html#pandas.io.formats.style.Styler.set_tooltips" title="pandas.io.formats.style.Styler.set_tooltips"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_tooltips</span></code></a>(ttips[, props, css_class])</p></td>
+<td><p>Set the DataFrame of strings on <code class="docutils literal notranslate"><span class="pre">Styler</span></code> generating <code class="docutils literal notranslate"><span class="pre">:hover</span></code> tooltips.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.set_uuid.html#pandas.io.formats.style.Styler.set_uuid" title="pandas.io.formats.style.Styler.set_uuid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_uuid</span></code></a>(uuid)</p></td>
+<td><p>Set the uuid applied to <code class="docutils literal notranslate"><span class="pre">id</span></code> attributes of HTML elements.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.text_gradient.html#pandas.io.formats.style.Styler.text_gradient" title="pandas.io.formats.style.Styler.text_gradient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">text_gradient</span></code></a>([cmap, low, high, axis, ...])</p></td>
+<td><p>Color the text in a gradient style.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.to_excel.html#pandas.io.formats.style.Styler.to_excel" title="pandas.io.formats.style.Styler.to_excel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_excel</span></code></a>(excel_writer[, sheet_name, na_rep, ...])</p></td>
+<td><p>Write Styler to an Excel sheet.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.to_html.html#pandas.io.formats.style.Styler.to_html" title="pandas.io.formats.style.Styler.to_html"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_html</span></code></a>([buf, table_uuid, table_attributes, ...])</p></td>
+<td><p>Write Styler to a file, buffer or string in HTML-CSS format.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.to_latex.html#pandas.io.formats.style.Styler.to_latex" title="pandas.io.formats.style.Styler.to_latex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_latex</span></code></a>([buf, column_format, position, ...])</p></td>
+<td><p>Write Styler to a file, buffer or string in LaTeX format.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.use.html#pandas.io.formats.style.Styler.use" title="pandas.io.formats.style.Styler.use"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use</span></code></a>(styles)</p></td>
+<td><p>Set the styles on the current Styler.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pandas.io.formats.style.Styler.where.html#pandas.io.formats.style.Styler.where" title="pandas.io.formats.style.Styler.where"><code class="xref py py-obj docutils literal notranslate"><span class="pre">where</span></code></a>(cond, value[, other, subset])</p></td>
+<td><p>(DEPRECATED) Apply CSS-styles based on a conditional function elementwise.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</section>
+
+
+              </div>
+              
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="../style.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Style</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="pandas.io.formats.style.Styler.apply.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">pandas.io.formats.style.Styler.apply</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+    <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+  <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2008-2022, the pandas development team.<br>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
+</p>
+    </div>
+    
+  </div>
+</footer>
+  </body>
+</html>
