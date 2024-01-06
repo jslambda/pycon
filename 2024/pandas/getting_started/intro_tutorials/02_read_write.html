@@ -1,0 +1,663 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>How do I read and write tabular data? &#8212; pandas 1.4.3 documentation</title>
+    
+    <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  
+    
+    <link rel="stylesheet"
+      href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+    
+      
+  
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/pydata-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/getting_started.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/pandas.css" />
+    
+    <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="How do I select a subset of a DataFrame?" href="03_subset_data.html" />
+    <link rel="prev" title="What kind of data does pandas handle?" href="01_table_oriented.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en">
+    
+
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-27880019-2', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+
+<a class="navbar-brand" href="../../index.html">
+  <img src="../../_static/pandas.svg" class="logo" alt="logo">
+</a>
+
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../index.html">
+  Getting started
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../user_guide/index.html">
+  User Guide
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../reference/index.html">
+  API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../development/index.html">
+  Development
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../whatsnew/index.html">
+  Release notes
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <div class="dropdown" id="version_switcher">
+    <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
+        1.4.3  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+
+<!-- NOTE: this JS must live here (not in our global JS file) because it relies
+     on being processed by Jinja before it is run (specifically for replacing
+     variables getting_started/intro_tutorials/02_read_write and {'json_url': 'https://pandas.pydata.org/versions.json', 'url_template': 'https://pandas.pydata.org/{version}/', 'version_match': '1.4.3'}.
+-->
+
+<script type="text/javascript">
+// Construct the target URL from the JSON components
+function buildURL(entry) {
+    var template = "https://pandas.pydata.org/{version}/";  // supplied by jinja
+    template = template.replace("{version}", entry.version);
+    return template;
+}
+
+// Check if corresponding page path exists in other version of docs
+// and, if so, go there instead of the homepage of the other docs version
+function checkPageExistsAndRedirect(event) {
+    const currentFilePath = "getting_started/intro_tutorials/02_read_write.html",
+          tryUrl = event.target.getAttribute("href");
+    let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
+    $.ajax({
+        type: 'HEAD',
+        url: tryUrl,
+        // if the page exists, go there
+        success: function() {
+            location.href = tryUrl;
+        }
+    }).fail(function() {
+        location.href = otherDocsHomepage;
+    });
+    // this prevents the browser from following the href of the clicked node
+    // (which is fine because this function takes care of redirecting)
+    return false;
+}
+
+// Populate the version switcher from the JSON config file
+(function () {
+    $.getJSON("https://pandas.pydata.org/versions.json", function(data, textStatus, jqXHR) {
+        const currentFilePath = "getting_started/intro_tutorials/02_read_write.html";
+        // create links to the corresponding page in the other docs versions
+        $.each(data, function(index, entry) {
+            // if no custom name specified (e.g., "latest"), use version string
+            if (!("name" in entry)) {
+                entry.name = entry.version;
+            }
+            // create the node
+            const node = document.createElement("a");
+            node.setAttribute("class", "list-group-item list-group-item-action py-1");
+            node.textContent = `${entry.name}`;
+            // get the base URL for that doc version, add the current page's
+            // path to it, and set as `href`
+            entry.url = buildURL(entry);
+            node.setAttribute("href", `${entry.url}${currentFilePath}`);
+            // on click, AJAX calls will check if the linked page exists before
+            // trying to redirect, and if not, will redirect to the homepage
+            // for that version of the docs.
+            node.onclick = checkPageExistsAndRedirect;
+            $("#version_switcher_menu").append(node);
+            // replace dropdown button text with the preferred display name of
+            // this version, rather than using sphinx's 1.4.3 variable.
+            // also highlight the dropdown entry for the currently-viewed
+            // version's entry
+            if (entry.version == "1.4.3") {
+                node.classList.add("active");
+                $("#version_switcher_button").text(entry.name);
+            }
+        });
+    });
+})();
+</script>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/pandas-dev/pandas" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://twitter.com/pandas_dev" rel="noopener" target="_blank" title="Twitter"><span><i class="fab fa-twitter-square"></i></span>
+            <label class="sr-only">Twitter</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar">
+              <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../install.html">
+   Installation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../overview.html">
+   Package overview
+  </a>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="index.html">
+   Getting started tutorials
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="01_table_oriented.html">
+     What kind of data does pandas handle?
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     How do I read and write tabular data?
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="03_subset_data.html">
+     How do I select a subset of a
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       DataFrame
+      </span>
+     </code>
+     ?
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="04_plotting.html">
+     How to create plots in pandas?
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="05_add_columns.html">
+     How to create new columns derived from existing columns?
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="06_calculate_statistics.html">
+     How to calculate summary statistics?
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="07_reshape_table_layout.html">
+     How to reshape the layout of tables?
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="08_combine_dataframes.html">
+     How to combine data from multiple tables?
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="09_timeseries.html">
+     How to handle time series data with ease?
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="10_text_data.html">
+     How to manipulate textual data?
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../comparison/index.html">
+   Comparison with other tools
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../comparison/comparison_with_r.html">
+     Comparison with R / R libraries
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../comparison/comparison_with_sql.html">
+     Comparison with SQL
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../comparison/comparison_with_spreadsheets.html">
+     Comparison with spreadsheets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../comparison/comparison_with_sas.html">
+     Comparison with SAS
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../comparison/comparison_with_stata.html">
+     Comparison with Stata
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../tutorials.html">
+   Community tutorials
+  </a>
+ </li>
+</ul>
+
+    
+  </div>
+</nav>
+              </div>
+              <div class="sidebar-end-items">
+              </div>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+
+<nav id="bd-toc-nav">
+    
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="highlight-ipython notranslate" id="min-tut-02-read-write"><div class="highlight"><pre><span></span><span class="gp">In [1]: </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+<div class="card gs-data">
+    <div class="card-header">
+        <div class="gs-data-title">
+            Data used for this tutorial:
+        </div>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item"><div data-toggle="collapse" href="#collapsedata" role="button" aria-expanded="false" aria-controls="collapsedata">
+    <span class="badge badge-dark">Titanic data</span>
+</div>
+<div class="collapse" id="collapsedata">
+    <div class="card-body">
+        <p class="card-text"><p>This tutorial uses the Titanic data set, stored as CSV. The data
+consists of the following data columns:</p>
+<ul class="simple">
+<li><p>PassengerId: Id of every passenger.</p></li>
+<li><p>Survived: This feature have value 0 and 1. 0 for not survived and 1
+for survived.</p></li>
+<li><p>Pclass: There are 3 classes: Class 1, Class 2 and Class 3.</p></li>
+<li><p>Name: Name of passenger.</p></li>
+<li><p>Sex: Gender of passenger.</p></li>
+<li><p>Age: Age of passenger.</p></li>
+<li><p>SibSp: Indication that passenger have siblings and spouse.</p></li>
+<li><p>Parch: Whether a passenger is alone or have family.</p></li>
+<li><p>Ticket: Ticket number of passenger.</p></li>
+<li><p>Fare: Indicating the fare.</p></li>
+<li><p>Cabin: The cabin of passenger.</p></li>
+<li><p>Embarked: The embarked category.</p></li>
+</ul>
+        </p>
+        <a href="https://github.com/pandas-dev/pandas/tree/main/doc/data/titanic.csv" class="btn btn-dark btn-sm">To raw data</a>
+    </div>
+</div>        </li>
+    </ul>
+</div><section id="how-do-i-read-and-write-tabular-data">
+<h1>How do I read and write tabular data?<a class="headerlink" href="#how-do-i-read-and-write-tabular-data" title="Permalink to this headline">¶</a></h1>
+<img alt="../../_images/02_io_readwrite.svg" class="align-center" src="../../_images/02_io_readwrite.svg" /><ul class="task-bullet">
+    <li><p>I want to analyze the Titanic passenger data, available as a CSV file.</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [2]: </span><span class="n">titanic</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;data/titanic.csv&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>pandas provides the <a class="reference internal" href="../../reference/api/pandas.read_csv.html#pandas.read_csv" title="pandas.read_csv"><code class="xref py py-func docutils literal notranslate"><span class="pre">read_csv()</span></code></a> function to read data stored as a csv
+file into a pandas <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>. pandas supports many different file
+formats or data sources out of the box (csv, excel, sql, json, parquet,
+…), each of them with the prefix <code class="docutils literal notranslate"><span class="pre">read_*</span></code>.</p>
+    </li>
+</ul><p>Make sure to always have a check on the data after reading in the
+data. When displaying a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>, the first and last 5 rows will be
+shown by default:</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [3]: </span><span class="n">titanic</span>
+<span class="gh">Out[3]: </span><span class="go"></span>
+<span class="go">     PassengerId  Survived  Pclass                                               Name  ...            Ticket     Fare  Cabin  Embarked</span>
+<span class="go">0              1         0       3                            Braund, Mr. Owen Harris  ...         A/5 21171   7.2500    NaN         S</span>
+<span class="go">1              2         1       1  Cumings, Mrs. John Bradley (Florence Briggs Th...  ...          PC 17599  71.2833    C85         C</span>
+<span class="go">2              3         1       3                             Heikkinen, Miss. Laina  ...  STON/O2. 3101282   7.9250    NaN         S</span>
+<span class="go">3              4         1       1       Futrelle, Mrs. Jacques Heath (Lily May Peel)  ...            113803  53.1000   C123         S</span>
+<span class="go">4              5         0       3                           Allen, Mr. William Henry  ...            373450   8.0500    NaN         S</span>
+<span class="go">..           ...       ...     ...                                                ...  ...               ...      ...    ...       ...</span>
+<span class="go">886          887         0       2                              Montvila, Rev. Juozas  ...            211536  13.0000    NaN         S</span>
+<span class="go">887          888         1       1                       Graham, Miss. Margaret Edith  ...            112053  30.0000    B42         S</span>
+<span class="go">888          889         0       3           Johnston, Miss. Catherine Helen &quot;Carrie&quot;  ...        W./C. 6607  23.4500    NaN         S</span>
+<span class="go">889          890         1       1                              Behr, Mr. Karl Howell  ...            111369  30.0000   C148         C</span>
+<span class="go">890          891         0       3                                Dooley, Mr. Patrick  ...            370376   7.7500    NaN         Q</span>
+
+<span class="go">[891 rows x 12 columns]</span>
+</pre></div>
+</div>
+<ul class="task-bullet">
+    <li><p>I want to see the first 8 rows of a pandas DataFrame.</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [4]: </span><span class="n">titanic</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="gh">Out[4]: </span><span class="go"></span>
+<span class="go">   PassengerId  Survived  Pclass                                               Name     Sex  ...  Parch            Ticket     Fare Cabin  Embarked</span>
+<span class="go">0            1         0       3                            Braund, Mr. Owen Harris    male  ...      0         A/5 21171   7.2500   NaN         S</span>
+<span class="go">1            2         1       1  Cumings, Mrs. John Bradley (Florence Briggs Th...  female  ...      0          PC 17599  71.2833   C85         C</span>
+<span class="go">2            3         1       3                             Heikkinen, Miss. Laina  female  ...      0  STON/O2. 3101282   7.9250   NaN         S</span>
+<span class="go">3            4         1       1       Futrelle, Mrs. Jacques Heath (Lily May Peel)  female  ...      0            113803  53.1000  C123         S</span>
+<span class="go">4            5         0       3                           Allen, Mr. William Henry    male  ...      0            373450   8.0500   NaN         S</span>
+<span class="go">5            6         0       3                                   Moran, Mr. James    male  ...      0            330877   8.4583   NaN         Q</span>
+<span class="go">6            7         0       1                            McCarthy, Mr. Timothy J    male  ...      0             17463  51.8625   E46         S</span>
+<span class="go">7            8         0       3                     Palsson, Master. Gosta Leonard    male  ...      1            349909  21.0750   NaN         S</span>
+
+<span class="go">[8 rows x 12 columns]</span>
+</pre></div>
+</div>
+<p>To see the first N rows of a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>, use the <a class="reference internal" href="../../reference/api/pandas.DataFrame.head.html#pandas.DataFrame.head" title="pandas.DataFrame.head"><code class="xref py py-meth docutils literal notranslate"><span class="pre">head()</span></code></a> method with
+the required number of rows (in this case 8) as argument.</p>
+    </li>
+</ul><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Interested in the last N rows instead? pandas also provides a
+<a class="reference internal" href="../../reference/api/pandas.DataFrame.tail.html#pandas.DataFrame.tail" title="pandas.DataFrame.tail"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tail()</span></code></a> method. For example, <code class="docutils literal notranslate"><span class="pre">titanic.tail(10)</span></code> will return the last
+10 rows of the DataFrame.</p>
+</div>
+<p>A check on how pandas interpreted each of the column data types can be
+done by requesting the pandas <code class="docutils literal notranslate"><span class="pre">dtypes</span></code> attribute:</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [5]: </span><span class="n">titanic</span><span class="o">.</span><span class="n">dtypes</span>
+<span class="gh">Out[5]: </span><span class="go"></span>
+<span class="go">PassengerId      int64</span>
+<span class="go">Survived         int64</span>
+<span class="go">Pclass           int64</span>
+<span class="go">Name            object</span>
+<span class="go">Sex             object</span>
+<span class="go">Age            float64</span>
+<span class="go">SibSp            int64</span>
+<span class="go">Parch            int64</span>
+<span class="go">Ticket          object</span>
+<span class="go">Fare           float64</span>
+<span class="go">Cabin           object</span>
+<span class="go">Embarked        object</span>
+<span class="go">dtype: object</span>
+</pre></div>
+</div>
+<p>For each of the columns, the used data type is enlisted. The data types
+in this <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> are integers (<code class="docutils literal notranslate"><span class="pre">int64</span></code>), floats (<code class="docutils literal notranslate"><span class="pre">float64</span></code>) and
+strings (<code class="docutils literal notranslate"><span class="pre">object</span></code>).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When asking for the <code class="docutils literal notranslate"><span class="pre">dtypes</span></code>, no brackets are used!
+<code class="docutils literal notranslate"><span class="pre">dtypes</span></code> is an attribute of a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> and <code class="docutils literal notranslate"><span class="pre">Series</span></code>. Attributes
+of <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> or <code class="docutils literal notranslate"><span class="pre">Series</span></code> do not need brackets. Attributes
+represent a characteristic of a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>/<code class="docutils literal notranslate"><span class="pre">Series</span></code>, whereas a
+method (which requires brackets) <em>do</em> something with the
+<code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>/<code class="docutils literal notranslate"><span class="pre">Series</span></code> as introduced in the <a class="reference internal" href="01_table_oriented.html#min-tut-01-tableoriented"><span class="std std-ref">first tutorial</span></a>.</p>
+</div>
+<ul class="task-bullet">
+    <li><p>My colleague requested the Titanic data as a spreadsheet.</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [6]: </span><span class="n">titanic</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="s2">&quot;titanic.xlsx&quot;</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;passengers&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Whereas <code class="docutils literal notranslate"><span class="pre">read_*</span></code> functions are used to read data to pandas, the
+<code class="docutils literal notranslate"><span class="pre">to_*</span></code> methods are used to store data. The <a class="reference internal" href="../../reference/api/pandas.DataFrame.to_excel.html#pandas.DataFrame.to_excel" title="pandas.DataFrame.to_excel"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_excel()</span></code></a> method stores
+the data as an excel file. In the example here, the <code class="docutils literal notranslate"><span class="pre">sheet_name</span></code> is
+named <em>passengers</em> instead of the default <em>Sheet1</em>. By setting
+<code class="docutils literal notranslate"><span class="pre">index=False</span></code> the row index labels are not saved in the spreadsheet.</p>
+    </li>
+</ul><p>The equivalent read function <code class="xref py py-meth docutils literal notranslate"><span class="pre">read_excel()</span></code> will reload the data to a
+<code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>:</p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [7]: </span><span class="n">titanic</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s2">&quot;titanic.xlsx&quot;</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;passengers&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [8]: </span><span class="n">titanic</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="gh">Out[8]: </span><span class="go"></span>
+<span class="go">   PassengerId  Survived  Pclass                                               Name     Sex  ...  Parch            Ticket     Fare Cabin  Embarked</span>
+<span class="go">0            1         0       3                            Braund, Mr. Owen Harris    male  ...      0         A/5 21171   7.2500   NaN         S</span>
+<span class="go">1            2         1       1  Cumings, Mrs. John Bradley (Florence Briggs Th...  female  ...      0          PC 17599  71.2833   C85         C</span>
+<span class="go">2            3         1       3                             Heikkinen, Miss. Laina  female  ...      0  STON/O2. 3101282   7.9250   NaN         S</span>
+<span class="go">3            4         1       1       Futrelle, Mrs. Jacques Heath (Lily May Peel)  female  ...      0            113803  53.1000  C123         S</span>
+<span class="go">4            5         0       3                           Allen, Mr. William Henry    male  ...      0            373450   8.0500   NaN         S</span>
+
+<span class="go">[5 rows x 12 columns]</span>
+</pre></div>
+</div>
+<ul class="task-bullet">
+    <li><p>I’m interested in a technical summary of a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+<div class="highlight-ipython notranslate"><div class="highlight"><pre><span></span><span class="gp">In [9]: </span><span class="n">titanic</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+<span class="go">&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;</span>
+<span class="go">RangeIndex: 891 entries, 0 to 890</span>
+<span class="go">Data columns (total 12 columns):</span>
+<span class="go"> #   Column       Non-Null Count  Dtype  </span>
+<span class="go">---  ------       --------------  -----  </span>
+<span class="go"> 0   PassengerId  891 non-null    int64  </span>
+<span class="go"> 1   Survived     891 non-null    int64  </span>
+<span class="go"> 2   Pclass       891 non-null    int64  </span>
+<span class="go"> 3   Name         891 non-null    object </span>
+<span class="go"> 4   Sex          891 non-null    object </span>
+<span class="go"> 5   Age          714 non-null    float64</span>
+<span class="go"> 6   SibSp        891 non-null    int64  </span>
+<span class="go"> 7   Parch        891 non-null    int64  </span>
+<span class="go"> 8   Ticket       891 non-null    object </span>
+<span class="go"> 9   Fare         891 non-null    float64</span>
+<span class="go"> 10  Cabin        204 non-null    object </span>
+<span class="go"> 11  Embarked     889 non-null    object </span>
+<span class="go">dtypes: float64(2), int64(5), object(5)</span>
+<span class="go">memory usage: 83.7+ KB</span>
+</pre></div>
+</div>
+<p>The method <a class="reference internal" href="../../reference/api/pandas.DataFrame.info.html#pandas.DataFrame.info" title="pandas.DataFrame.info"><code class="xref py py-meth docutils literal notranslate"><span class="pre">info()</span></code></a> provides technical information about a
+<code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>, so let’s explain the output in more detail:</p>
+<ul class="simple">
+<li><p>It is indeed a <a class="reference internal" href="../../reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a>.</p></li>
+<li><p>There are 891 entries, i.e. 891 rows.</p></li>
+<li><p>Each row has a row label (aka the <code class="docutils literal notranslate"><span class="pre">index</span></code>) with values ranging from
+0 to 890.</p></li>
+<li><p>The table has 12 columns. Most columns have a value for each of the
+rows (all 891 values are <code class="docutils literal notranslate"><span class="pre">non-null</span></code>). Some columns do have missing
+values and less than 891 <code class="docutils literal notranslate"><span class="pre">non-null</span></code> values.</p></li>
+<li><p>The columns <code class="docutils literal notranslate"><span class="pre">Name</span></code>, <code class="docutils literal notranslate"><span class="pre">Sex</span></code>, <code class="docutils literal notranslate"><span class="pre">Cabin</span></code> and <code class="docutils literal notranslate"><span class="pre">Embarked</span></code> consists of
+textual data (strings, aka <code class="docutils literal notranslate"><span class="pre">object</span></code>). The other columns are
+numerical data with some of them whole numbers (aka <code class="docutils literal notranslate"><span class="pre">integer</span></code>) and
+others are real numbers (aka <code class="docutils literal notranslate"><span class="pre">float</span></code>).</p></li>
+<li><p>The kind of data (characters, integers,…) in the different columns
+are summarized by listing the <code class="docutils literal notranslate"><span class="pre">dtypes</span></code>.</p></li>
+<li><p>The approximate amount of RAM used to hold the DataFrame is provided
+as well.</p></li>
+</ul>
+    </li>
+</ul><div class="shadow gs-callout gs-callout-remember">
+    <h4>REMEMBER</h4><ul class="simple">
+<li><p>Getting data in to pandas from many different file formats or data
+sources is supported by <code class="docutils literal notranslate"><span class="pre">read_*</span></code> functions.</p></li>
+<li><p>Exporting data out of pandas is provided by different
+<code class="docutils literal notranslate"><span class="pre">to_*</span></code>methods.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">head</span></code>/<code class="docutils literal notranslate"><span class="pre">tail</span></code>/<code class="docutils literal notranslate"><span class="pre">info</span></code> methods and the <code class="docutils literal notranslate"><span class="pre">dtypes</span></code> attribute
+are convenient for a first check.</p></li>
+</ul>
+</div><div class="d-flex flex-row bg-light gs-torefguide">
+    <span class="badge badge-info">To user guide</span><p>For a complete overview of the input and output possibilities from and to pandas, see the user guide section about <a class="reference internal" href="../../user_guide/io.html#io"><span class="std std-ref">reader and writer functions</span></a>.</p>
+</div></section>
+
+
+              </div>
+              
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="01_table_oriented.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">What kind of data does pandas handle?</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="03_subset_data.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">How do I select a subset of a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>?</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+    <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+  <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2008-2022, the pandas development team.<br>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
+</p>
+    </div>
+    
+  </div>
+</footer>
+  </body>
+</html>

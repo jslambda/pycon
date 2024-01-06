@@ -1,0 +1,738 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Resampling &#8212; pandas 1.4.3 documentation</title>
+    
+    <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  
+    
+    <link rel="stylesheet"
+      href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+    
+      
+  
+    
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/pydata-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/getting_started.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/pandas.css" />
+    
+    <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pandas.core.resample.Resampler.__iter__" href="api/pandas.core.resample.Resampler.__iter__.html" />
+    <link rel="prev" title="pandas.core.groupby.DataFrameGroupBy.boxplot" href="api/pandas.core.groupby.DataFrameGroupBy.boxplot.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en">
+    
+
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-27880019-2', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+
+<a class="navbar-brand" href="../index.html">
+  <img src="../_static/pandas.svg" class="logo" alt="logo">
+</a>
+
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../getting_started/index.html">
+  Getting started
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../user_guide/index.html">
+  User Guide
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="index.html">
+  API reference
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../development/index.html">
+  Development
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../whatsnew/index.html">
+  Release notes
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <div class="dropdown" id="version_switcher">
+    <button type="button" class="btn btn-primary btn-sm navbar-btn dropdown-toggle" id="version_switcher_button" data-toggle="dropdown">
+        1.4.3  <!-- this text may get changed later by javascript -->
+        <span class="caret"></span>
+    </button>
+    <div id="version_switcher_menu" class="dropdown-menu list-group-flush py-0" aria-labelledby="version_switcher_button">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+</div>
+
+<!-- NOTE: this JS must live here (not in our global JS file) because it relies
+     on being processed by Jinja before it is run (specifically for replacing
+     variables reference/resampling and {'json_url': 'https://pandas.pydata.org/versions.json', 'url_template': 'https://pandas.pydata.org/{version}/', 'version_match': '1.4.3'}.
+-->
+
+<script type="text/javascript">
+// Construct the target URL from the JSON components
+function buildURL(entry) {
+    var template = "https://pandas.pydata.org/{version}/";  // supplied by jinja
+    template = template.replace("{version}", entry.version);
+    return template;
+}
+
+// Check if corresponding page path exists in other version of docs
+// and, if so, go there instead of the homepage of the other docs version
+function checkPageExistsAndRedirect(event) {
+    const currentFilePath = "reference/resampling.html",
+          tryUrl = event.target.getAttribute("href");
+    let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
+    $.ajax({
+        type: 'HEAD',
+        url: tryUrl,
+        // if the page exists, go there
+        success: function() {
+            location.href = tryUrl;
+        }
+    }).fail(function() {
+        location.href = otherDocsHomepage;
+    });
+    // this prevents the browser from following the href of the clicked node
+    // (which is fine because this function takes care of redirecting)
+    return false;
+}
+
+// Populate the version switcher from the JSON config file
+(function () {
+    $.getJSON("https://pandas.pydata.org/versions.json", function(data, textStatus, jqXHR) {
+        const currentFilePath = "reference/resampling.html";
+        // create links to the corresponding page in the other docs versions
+        $.each(data, function(index, entry) {
+            // if no custom name specified (e.g., "latest"), use version string
+            if (!("name" in entry)) {
+                entry.name = entry.version;
+            }
+            // create the node
+            const node = document.createElement("a");
+            node.setAttribute("class", "list-group-item list-group-item-action py-1");
+            node.textContent = `${entry.name}`;
+            // get the base URL for that doc version, add the current page's
+            // path to it, and set as `href`
+            entry.url = buildURL(entry);
+            node.setAttribute("href", `${entry.url}${currentFilePath}`);
+            // on click, AJAX calls will check if the linked page exists before
+            // trying to redirect, and if not, will redirect to the homepage
+            // for that version of the docs.
+            node.onclick = checkPageExistsAndRedirect;
+            $("#version_switcher_menu").append(node);
+            // replace dropdown button text with the preferred display name of
+            // this version, rather than using sphinx's 1.4.3 variable.
+            // also highlight the dropdown entry for the currently-viewed
+            // version's entry
+            if (entry.version == "1.4.3") {
+                node.classList.add("active");
+                $("#version_switcher_button").text(entry.name);
+            }
+        });
+    });
+})();
+</script>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/pandas-dev/pandas" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://twitter.com/pandas_dev" rel="noopener" target="_blank" title="Twitter"><span><i class="fab fa-twitter-square"></i></span>
+            <label class="sr-only">Twitter</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar">
+              <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="io.html">
+   Input/output
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="general_functions.html">
+   General functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="series.html">
+   Series
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="frame.html">
+   DataFrame
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="arrays.html">
+   pandas arrays, scalars, and data types
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="indexing.html">
+   Index objects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="offset_frequency.html">
+   Date offsets
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="window.html">
+   Window
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="groupby.html">
+   GroupBy
+  </a>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="current reference internal" href="#">
+   Resampling
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.core.resample.Resampler.__iter__.html">
+     pandas.core.resample.Resampler.__iter__
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.core.resample.Resampler.groups.html">
+     pandas.core.resample.Resampler.groups
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.core.resample.Resampler.indices.html">
+     pandas.core.resample.Resampler.indices
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.core.resample.Resampler.get_group.html">
+     pandas.core.resample.Resampler.get_group
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.core.resample.Resampler.apply.html">
+     pandas.core.resample.Resampler.apply
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.core.resample.Resampler.aggregate.html">
+     pandas.core.resample.Resampler.aggregate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.core.resample.Resampler.transform.html">
+     pandas.core.resample.Resampler.transform
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.core.resample.Resampler.pipe.html">
+     pandas.core.resample.Resampler.pipe
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.core.resample.Resampler.ffill.html">
+     pandas.core.resample.Resampler.ffill
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.core.resample.Resampler.backfill.html">
+     pandas.core.resample.Resampler.backfill
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.core.resample.Resampler.bfill.html">
+     pandas.core.resample.Resampler.bfill
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.core.resample.Resampler.pad.html">
+     pandas.core.resample.Resampler.pad
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.core.resample.Resampler.nearest.html">
+     pandas.core.resample.Resampler.nearest
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.core.resample.Resampler.fillna.html">
+     pandas.core.resample.Resampler.fillna
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.core.resample.Resampler.asfreq.html">
+     pandas.core.resample.Resampler.asfreq
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.core.resample.Resampler.interpolate.html">
+     pandas.core.resample.Resampler.interpolate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.core.resample.Resampler.count.html">
+     pandas.core.resample.Resampler.count
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.core.resample.Resampler.nunique.html">
+     pandas.core.resample.Resampler.nunique
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.core.resample.Resampler.first.html">
+     pandas.core.resample.Resampler.first
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.core.resample.Resampler.last.html">
+     pandas.core.resample.Resampler.last
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.core.resample.Resampler.max.html">
+     pandas.core.resample.Resampler.max
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.core.resample.Resampler.mean.html">
+     pandas.core.resample.Resampler.mean
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.core.resample.Resampler.median.html">
+     pandas.core.resample.Resampler.median
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.core.resample.Resampler.min.html">
+     pandas.core.resample.Resampler.min
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.core.resample.Resampler.ohlc.html">
+     pandas.core.resample.Resampler.ohlc
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.core.resample.Resampler.prod.html">
+     pandas.core.resample.Resampler.prod
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.core.resample.Resampler.size.html">
+     pandas.core.resample.Resampler.size
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.core.resample.Resampler.sem.html">
+     pandas.core.resample.Resampler.sem
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.core.resample.Resampler.std.html">
+     pandas.core.resample.Resampler.std
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.core.resample.Resampler.sum.html">
+     pandas.core.resample.Resampler.sum
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.core.resample.Resampler.var.html">
+     pandas.core.resample.Resampler.var
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/pandas.core.resample.Resampler.quantile.html">
+     pandas.core.resample.Resampler.quantile
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="style.html">
+   Style
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="plotting.html">
+   Plotting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="general_utility_functions.html">
+   General utility functions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="extensions.html">
+   Extensions
+  </a>
+ </li>
+</ul>
+
+    
+  </div>
+</nav>
+              </div>
+              <div class="sidebar-end-items">
+              </div>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#indexing-iteration">
+   Indexing, iteration
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#function-application">
+   Function application
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#upsampling">
+   Upsampling
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#computations-descriptive-stats">
+   Computations / descriptive stats
+  </a>
+ </li>
+</ul>
+
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <section id="resampling">
+<span id="api-resampling"></span><h1>Resampling<a class="headerlink" href="#resampling" title="Permalink to this headline">¶</a></h1>
+<p>Resampler objects are returned by resample calls: <a class="reference internal" href="api/pandas.DataFrame.resample.html#pandas.DataFrame.resample" title="pandas.DataFrame.resample"><code class="xref py py-func docutils literal notranslate"><span class="pre">pandas.DataFrame.resample()</span></code></a>, <a class="reference internal" href="api/pandas.Series.resample.html#pandas.Series.resample" title="pandas.Series.resample"><code class="xref py py-func docutils literal notranslate"><span class="pre">pandas.Series.resample()</span></code></a>.</p>
+<section id="indexing-iteration">
+<h2>Indexing, iteration<a class="headerlink" href="#indexing-iteration" title="Permalink to this headline">¶</a></h2>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.core.resample.Resampler.__iter__.html#pandas.core.resample.Resampler.__iter__" title="pandas.core.resample.Resampler.__iter__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler.__iter__</span></code></a>()</p></td>
+<td><p>Groupby iterator.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.core.resample.Resampler.groups.html#pandas.core.resample.Resampler.groups" title="pandas.core.resample.Resampler.groups"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler.groups</span></code></a></p></td>
+<td><p>Dict {group name -&gt; group labels}.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.core.resample.Resampler.indices.html#pandas.core.resample.Resampler.indices" title="pandas.core.resample.Resampler.indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler.indices</span></code></a></p></td>
+<td><p>Dict {group name -&gt; group indices}.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.core.resample.Resampler.get_group.html#pandas.core.resample.Resampler.get_group" title="pandas.core.resample.Resampler.get_group"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler.get_group</span></code></a>(name[, obj])</p></td>
+<td><p>Construct DataFrame from group with provided name.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="function-application">
+<h2>Function application<a class="headerlink" href="#function-application" title="Permalink to this headline">¶</a></h2>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.core.resample.Resampler.apply.html#pandas.core.resample.Resampler.apply" title="pandas.core.resample.Resampler.apply"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler.apply</span></code></a>([func])</p></td>
+<td><p>Aggregate using one or more operations over the specified axis.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.core.resample.Resampler.aggregate.html#pandas.core.resample.Resampler.aggregate" title="pandas.core.resample.Resampler.aggregate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler.aggregate</span></code></a>([func])</p></td>
+<td><p>Aggregate using one or more operations over the specified axis.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.core.resample.Resampler.transform.html#pandas.core.resample.Resampler.transform" title="pandas.core.resample.Resampler.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler.transform</span></code></a>(arg, *args, **kwargs)</p></td>
+<td><p>Call function producing a like-indexed Series on each group and return a Series with the transformed values.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.core.resample.Resampler.pipe.html#pandas.core.resample.Resampler.pipe" title="pandas.core.resample.Resampler.pipe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler.pipe</span></code></a>(func, *args, **kwargs)</p></td>
+<td><p>Apply a function <cite>func</cite> with arguments to this Resampler object and return the function's result.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="upsampling">
+<h2>Upsampling<a class="headerlink" href="#upsampling" title="Permalink to this headline">¶</a></h2>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.core.resample.Resampler.ffill.html#pandas.core.resample.Resampler.ffill" title="pandas.core.resample.Resampler.ffill"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler.ffill</span></code></a>([limit])</p></td>
+<td><p>Forward fill the values.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.core.resample.Resampler.backfill.html#pandas.core.resample.Resampler.backfill" title="pandas.core.resample.Resampler.backfill"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler.backfill</span></code></a>([limit])</p></td>
+<td><p>Backward fill the new missing values in the resampled data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.core.resample.Resampler.bfill.html#pandas.core.resample.Resampler.bfill" title="pandas.core.resample.Resampler.bfill"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler.bfill</span></code></a>([limit])</p></td>
+<td><p>Backward fill the new missing values in the resampled data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.core.resample.Resampler.pad.html#pandas.core.resample.Resampler.pad" title="pandas.core.resample.Resampler.pad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler.pad</span></code></a>([limit])</p></td>
+<td><p>Forward fill the values.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.core.resample.Resampler.nearest.html#pandas.core.resample.Resampler.nearest" title="pandas.core.resample.Resampler.nearest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler.nearest</span></code></a>([limit])</p></td>
+<td><p>Resample by using the nearest value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.core.resample.Resampler.fillna.html#pandas.core.resample.Resampler.fillna" title="pandas.core.resample.Resampler.fillna"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler.fillna</span></code></a>(method[, limit])</p></td>
+<td><p>Fill missing values introduced by upsampling.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.core.resample.Resampler.asfreq.html#pandas.core.resample.Resampler.asfreq" title="pandas.core.resample.Resampler.asfreq"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler.asfreq</span></code></a>([fill_value])</p></td>
+<td><p>Return the values at the new freq, essentially a reindex.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.core.resample.Resampler.interpolate.html#pandas.core.resample.Resampler.interpolate" title="pandas.core.resample.Resampler.interpolate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler.interpolate</span></code></a>([method, axis, limit, ...])</p></td>
+<td><p>Interpolate values according to different methods.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="computations-descriptive-stats">
+<h2>Computations / descriptive stats<a class="headerlink" href="#computations-descriptive-stats" title="Permalink to this headline">¶</a></h2>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.core.resample.Resampler.count.html#pandas.core.resample.Resampler.count" title="pandas.core.resample.Resampler.count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler.count</span></code></a>()</p></td>
+<td><p>Compute count of group, excluding missing values.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.core.resample.Resampler.nunique.html#pandas.core.resample.Resampler.nunique" title="pandas.core.resample.Resampler.nunique"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler.nunique</span></code></a>([_method])</p></td>
+<td><p>Return number of unique elements in the group.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.core.resample.Resampler.first.html#pandas.core.resample.Resampler.first" title="pandas.core.resample.Resampler.first"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler.first</span></code></a>([_method, min_count])</p></td>
+<td><p>Compute first of group values.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.core.resample.Resampler.last.html#pandas.core.resample.Resampler.last" title="pandas.core.resample.Resampler.last"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler.last</span></code></a>([_method, min_count])</p></td>
+<td><p>Compute last of group values.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.core.resample.Resampler.max.html#pandas.core.resample.Resampler.max" title="pandas.core.resample.Resampler.max"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler.max</span></code></a>([_method, min_count])</p></td>
+<td><p>Compute max of group values.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.core.resample.Resampler.mean.html#pandas.core.resample.Resampler.mean" title="pandas.core.resample.Resampler.mean"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler.mean</span></code></a>([_method])</p></td>
+<td><p>Compute mean of groups, excluding missing values.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.core.resample.Resampler.median.html#pandas.core.resample.Resampler.median" title="pandas.core.resample.Resampler.median"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler.median</span></code></a>([_method])</p></td>
+<td><p>Compute median of groups, excluding missing values.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.core.resample.Resampler.min.html#pandas.core.resample.Resampler.min" title="pandas.core.resample.Resampler.min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler.min</span></code></a>([_method, min_count])</p></td>
+<td><p>Compute min of group values.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.core.resample.Resampler.ohlc.html#pandas.core.resample.Resampler.ohlc" title="pandas.core.resample.Resampler.ohlc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler.ohlc</span></code></a>([_method])</p></td>
+<td><p>Compute open, high, low and close values of a group, excluding missing values.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.core.resample.Resampler.prod.html#pandas.core.resample.Resampler.prod" title="pandas.core.resample.Resampler.prod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler.prod</span></code></a>([_method, min_count])</p></td>
+<td><p>Compute prod of group values.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.core.resample.Resampler.size.html#pandas.core.resample.Resampler.size" title="pandas.core.resample.Resampler.size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler.size</span></code></a>()</p></td>
+<td><p>Compute group sizes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.core.resample.Resampler.sem.html#pandas.core.resample.Resampler.sem" title="pandas.core.resample.Resampler.sem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler.sem</span></code></a>([_method])</p></td>
+<td><p>Compute standard error of the mean of groups, excluding missing values.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.core.resample.Resampler.std.html#pandas.core.resample.Resampler.std" title="pandas.core.resample.Resampler.std"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler.std</span></code></a>([ddof])</p></td>
+<td><p>Compute standard deviation of groups, excluding missing values.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.core.resample.Resampler.sum.html#pandas.core.resample.Resampler.sum" title="pandas.core.resample.Resampler.sum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler.sum</span></code></a>([_method, min_count])</p></td>
+<td><p>Compute sum of group values.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/pandas.core.resample.Resampler.var.html#pandas.core.resample.Resampler.var" title="pandas.core.resample.Resampler.var"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler.var</span></code></a>([ddof])</p></td>
+<td><p>Compute variance of groups, excluding missing values.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/pandas.core.resample.Resampler.quantile.html#pandas.core.resample.Resampler.quantile" title="pandas.core.resample.Resampler.quantile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Resampler.quantile</span></code></a>([q])</p></td>
+<td><p>Return value at the given quantile.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+              </div>
+              
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="api/pandas.core.groupby.DataFrameGroupBy.boxplot.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">pandas.core.groupby.DataFrameGroupBy.boxplot</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="api/pandas.core.resample.Resampler.__iter__.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">pandas.core.resample.Resampler.__iter__</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+    <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+  <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2008-2022, the pandas development team.<br>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
+</p>
+    </div>
+    
+  </div>
+</footer>
+  </body>
+</html>
