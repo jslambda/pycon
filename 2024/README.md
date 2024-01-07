@@ -1,4 +1,4 @@
-# Build your own search engine
+# Build a search engine!
 
 ## Quick start
 1. You need to have an ElasticSearch instance running at localhost:9200 (see https://www.elastic.co/downloads/elasticsearch) with authentication disabled.
@@ -21,7 +21,7 @@ python3 readpandas.py output
 4. Run
 
 ```
-sh create-or-update-pandas.sh
+sh create-or-update-pandas-template.sh
 ```
 to customize ElasticSearch analyzers for the index.
 
